@@ -1,18 +1,18 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { cn } from "@/lib/utils";
 
-import { Button } from '@/components/ui/button';
+import { Button } from "@/components/ui/button";
 
 interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
   title?: string;
 }
 
 const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
-  ({ title = 'Board Title', className, ...props }, ref) => {
+  ({ title = "Board Title", className, ...props }, ref) => {
     return (
       <div
         ref={ref}
-        className={cn('flex items-center justify-evenly grow', className)}
+        className={cn("flex grow items-center justify-evenly", className)}
         {...props}
       >
         <h1 className="text-2xl font-bold">{title}</h1>
@@ -22,9 +22,9 @@ const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
         </div>
       </div>
     );
-  }
+  },
 );
 
-Header.displayName = 'Header';
+Header.displayName = "Header";
 
 export default Header;
