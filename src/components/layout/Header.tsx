@@ -1,30 +1,29 @@
-import React from "react";
+import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 
-interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-  title?: string;
-}
+type HeaderProps = ComponentPropsWithoutRef<"div"> & {
+  boardTitle?: string;
+};
 
-const Header = React.forwardRef<HTMLDivElement, HeaderProps>(
-  ({ title = "Board Title", className, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn("flex grow items-center justify-evenly", className)}
-        {...props}
-      >
-        <h1 className="text-2xl font-bold">{title}</h1>
-        <div className="flex gap-2">
-          <Button>Button 1</Button>
-          <Button>Button 2</Button>
-        </div>
+function Header({
+  boardTitle = "Board Title",
+  className,
+  ...props
+}: HeaderProps) {
+  return (
+    <div
+      className={cn("flex grow items-center justify-evenly", className)}
+      {...props}
+    >
+      <h1 className="text-2xl font-bold">{boardTitle}</h1>
+      <div className="flex gap-2">
+        <Button>Button 1</Button>
+        <Button>Button 2</Button>
       </div>
-    );
-  },
-);
-
-Header.displayName = "Header";
+    </div>
+  );
+}
 
 export default Header;
