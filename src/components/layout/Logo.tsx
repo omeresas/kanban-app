@@ -1,12 +1,25 @@
-import { Kanban } from 'lucide-react';
+import { ComponentPropsWithoutRef } from "react";
+import { cn } from "@/lib/utils";
 
-function Logo() {
+import { Kanban } from "lucide-react";
+
+type LogoProps = ComponentPropsWithoutRef<"div">;
+
+const Logo = ({ className, ...props }: LogoProps) => {
   return (
-    <div className="flex items-center gap-2 bg-pink-200 px-20 py-10 border-r-2 border-gray-500">
+    <div
+      className={cn(
+        "flex items-center gap-2 border-r-2 border-gray-500 bg-pink-200 px-20 py-10",
+        className,
+      )}
+      {...props}
+    >
       <Kanban size={36} strokeWidth={3.5} />
       <span className="text-4xl font-bold">Kanban</span>
     </div>
   );
-}
+};
+
+Logo.displayName = "Logo";
 
 export default Logo;
