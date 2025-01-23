@@ -1,6 +1,7 @@
-import Logo from "@/components/layout/Logo";
-import Header from "@/components/layout/Header";
-import Sidebar from "@/components/layout/Sidebar";
+import Logo from "@/components/Logo/Logo";
+import Header from "@/components/Header/Header";
+import Sidebar from "@/components/Sidebar/Sidebar";
+import Board from "@/components/Board/Board";
 
 function App() {
   return (
@@ -8,7 +9,7 @@ function App() {
       <Logo className="col-start-1 row-start-1 bg-blue-200" />
       <Header className="col-start-2 row-start-1 bg-red-200" />
       <Sidebar className="col-start-1 row-start-2 bg-yellow-200" />
-      <Header className="col-start-2 row-start-2 bg-purple-200" />
+      <Board className="col-start-2 row-start-2 bg-purple-200" />
     </div>
   );
 }
