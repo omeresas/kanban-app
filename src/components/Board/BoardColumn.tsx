@@ -6,7 +6,7 @@ const BoardColumn = ({ title, tasks }: { title: string; tasks: string[] }) => {
         {tasks.map((task, index) => (
           <div
             key={index}
-            className="rounded-md bg-gray-700 p-3 text-gray-200 shadow transition hover:bg-gray-600"
+            className="rounded-md bg-gray-700 p-3 text-gray-200 shadow-sm transition hover:bg-gray-600"
           >
             {task}
           </div>
