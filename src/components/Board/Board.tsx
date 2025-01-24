@@ -2,24 +2,32 @@ import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 
 import { BoardColumn, NewColumnButton } from "./BoardColumn";
+import data from "@/data/data.json"; // Adjust the path based on your file structure
+import { DndContext } from "@dnd-kit/core";
 
 type BoardProps = ComponentPropsWithoutRef<"div">;
 
 const Board = ({ className, ...props }: BoardProps) => {
   return (
-    <div
-      className={cn(
-        "grid auto-cols-[300px] grid-flow-col gap-6 overflow-x-auto p-6",
-        className,
-      )}
-      {...props}
-    >
-      {/* Example columns */}
-      <BoardColumn title="To Do" tasks={["Task 1", "Task 2", "Task 3"]} />
-      <BoardColumn title="Doing" tasks={["Task 4", "Task 5"]} />
-      <BoardColumn title="Done" tasks={["Task 6", "Task 7", "Task 8"]} />
-      <NewColumnButton />
-    </div>
+    <DndContext>
+      <div
+        className={cn(
+          "grid auto-cols-[300px] grid-flow-col gap-6 p-6",
+          className,
+        )}
+        {...props}
+      >
+        {data.columns.map((column) => (
+          <BoardColumn
+            key={column.id}
+            id={column.id}
+            title={column.title}
+            tasks={column.tasks}
+          />
+        ))}
+        <NewColumnButton />
+      </div>
+    </DndContext>
   );
 };
 
