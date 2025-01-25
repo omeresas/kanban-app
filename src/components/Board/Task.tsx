@@ -14,12 +14,11 @@ const Task = ({ id, text, className, ...props }: TaskProps) => {
       id: `task-${id}`,
     });
 
-  console.log("isDragging", isDragging);
-  console.log("transform", transform);
+  // console.log("isDragging", isDragging);
+  // console.log("transform", transform);
 
   const style = {
     transform: transform ? CSS.Translate.toString(transform) : undefined,
-    zIndex: isDragging ? 1000 : "auto", // Apply high z-index while dragging
   };
 
   return (
@@ -29,12 +28,12 @@ const Task = ({ id, text, className, ...props }: TaskProps) => {
       {...listeners}
       {...attributes}
       className={cn(
-        "z-40 cursor-move rounded-md bg-gray-700 p-3 text-gray-200 hover:bg-gray-600",
+        "cursor-move rounded-md bg-gray-700 p-3 text-gray-200 hover:bg-gray-600",
         className,
       )}
       {...props}
     >
-      {text}
+      {id}: {text}
     </div>
   );
 };

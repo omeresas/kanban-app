@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 
 import { BoardColumn, NewColumnButton } from "./BoardColumn";
-import data from "@/data/data.json"; // Adjust the path based on your file structure
+import data from "@/data/fakedata.json"; // Adjust the path based on your file structure
 import { DndContext } from "@dnd-kit/core";
 
 type BoardProps = ComponentPropsWithoutRef<"div">;

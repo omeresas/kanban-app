@@ -1,15 +1,16 @@
 import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
-import Task from "./Task"; // Import the new Task component
+import Task from "./Task";
 
 interface BoardColumnProps {
   title: string;
-  tasks: { id: string; text: string }[]; // Updated task type
-  id: string; // Unique ID for this column
+  tasks: { id: string; text: string }[];
+  id: string;
 }
 
 const BoardColumn = ({ title, tasks, id }: BoardColumnProps) => {
   const { isOver, setNodeRef } = useDroppable({ id }); // Unique ID for the droppable
+  console.log("isOver", isOver);
 
   return (
     <div
