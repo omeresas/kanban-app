@@ -4,8 +4,11 @@ import { cn } from "@/lib/utils";
 import { BoardColumn, NewColumnButton } from "./BoardColumn";
 import data from "@/data/fakedata.json"; // Adjust the path based on your file structure
 import { DndContext } from "@dnd-kit/core";
+import { type Board } from "@/store/types";
 
-type BoardProps = ComponentPropsWithoutRef<"div">;
+type BoardProps = ComponentPropsWithoutRef<"div"> & {
+  board: Board;
+};
 
 const Board = ({ className, ...props }: BoardProps) => {
   return (
