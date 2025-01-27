@@ -12,10 +12,6 @@ function App() {
     useState<UniqueIdentifier | null>(0);
   const boards = useKanbanStore((state) => state.boards);
   const selectedBoard = boards.find((board) => board.id === selectedBoardId);
-  const boardNamesIds = boards.map((board) => ({
-    id: board.id,
-    name: board.name,
-  }));
 
   return (
     <div className="grid h-screen grid-cols-[auto_1fr] grid-rows-[auto_1fr]">
@@ -23,7 +19,6 @@ function App() {
       <Header className="col-start-2 row-start-1 bg-red-200" />
       <Sidebar
         className="col-start-1 row-start-2 bg-yellow-200"
-        boardNamesIds={boardNamesIds}
         selectedBoardId={selectedBoardId}
         setSelectedBoardId={setSelectedBoardId}
       />

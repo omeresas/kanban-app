@@ -1,41 +1,5 @@
 import { produce } from "immer";
-import { Board, Column, Task } from "./types";
-
-type KanbanState = {
-  boards: Board[];
-};
-
-type KanbanAction =
-  | { type: "addBoard"; payload: Board }
-  | { type: "removeBoard"; payload: number }
-  | { type: "addColumn"; payload: { boardId: number; column: Column } }
-  | { type: "removeColumn"; payload: { boardId: number; columnId: number } }
-  | {
-      type: "addTask";
-      payload: { boardId: number; columnId: number; task: Task };
-    }
-  | {
-      type: "updateTask";
-      payload: {
-        boardId: number;
-        columnId: number;
-        taskId: number;
-        updatedTask: Partial<Task>;
-      };
-    }
-  | {
-      type: "removeTask";
-      payload: { boardId: number; columnId: number; taskId: number };
-    }
-  | {
-      type: "toggleSubtask";
-      payload: {
-        boardId: number;
-        columnId: number;
-        taskId: number;
-        subtaskIndex: number;
-      };
-    };
+import type { KanbanState, KanbanAction } from "@/store/store";
 
 export const kanbanReducer = (
   state: KanbanState,

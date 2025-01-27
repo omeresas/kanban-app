@@ -1,8 +1,15 @@
 import { UniqueIdentifier } from "@dnd-kit/core";
 
-export type Subtask = {
-  title: string;
-  isCompleted: boolean;
+export type Board = {
+  id: UniqueIdentifier;
+  name: string;
+  columns: Column[];
+};
+
+export type Column = {
+  id: UniqueIdentifier;
+  name: string;
+  tasks: Task[];
 };
 
 export type Task = {
@@ -14,14 +21,7 @@ export type Task = {
   subtasks: Subtask[];
 };
 
-export type Column = {
-  id: UniqueIdentifier;
-  name: string;
-  tasks: Task[];
-};
-
-export type Board = {
-  id: UniqueIdentifier;
-  name: string;
-  columns: Column[];
+export type Subtask = {
+  title: string;
+  isCompleted: boolean;
 };
