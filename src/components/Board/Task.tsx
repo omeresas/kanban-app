@@ -1,21 +1,22 @@
-import { useDraggable } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
 import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
+
+import { type Task } from "@/store/types";
 
 type TaskProps = ComponentPropsWithoutRef<"div"> & {
-  id: string; // Unique string ID for the task
-  text: string; // Task content
+  task: Task;
 };
 
-const Task = ({ id, text, className, ...props }: TaskProps) => {
+const Task = ({ task, className, ...props }: TaskProps) => {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({
-      id: `task-${id}`,
+      id: `task-${task.id}`,
     });
 
-  // console.log("isDragging", isDragging);
-  // console.log("transform", transform);
+  console.log("isDragging", isDragging);
+  console.log("transform", transform);
 
   const style = {
     transform: transform ? CSS.Translate.toString(transform) : undefined,
@@ -33,7 +34,7 @@ const Task = ({ id, text, className, ...props }: TaskProps) => {
       )}
       {...props}
     >
-      {id}: {text}
+      {task.id}: {task.title}
     </div>
   );
 };

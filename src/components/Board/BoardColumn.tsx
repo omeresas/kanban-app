@@ -2,17 +2,15 @@ import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
 
-import TaskCard from "./TaskCard";
-import { type Task } from "@/store/types";
+import TaskCard from "./Task";
+import { type Column } from "@/store/types";
 
 type BoardColumnProps = ComponentPropsWithoutRef<"div"> & {
-  id: number;
-  name: string;
-  tasks: Task[];
+  column: Column;
 };
 
-const BoardColumn = ({ title, tasks, id }: BoardColumnProps) => {
-  const { isOver, setNodeRef } = useDroppable({ id }); // Unique ID for the droppable
+const BoardColumn = ({ column, className, ...props }: BoardColumnProps) => {
+  const { isOver, setNodeRef } = useDroppable({ id: `column-${column.id}` });
   console.log("isOver", isOver);
 
   return (
@@ -20,15 +18,17 @@ const BoardColumn = ({ title, tasks, id }: BoardColumnProps) => {
       ref={setNodeRef}
       className={cn(
         "flex flex-col bg-gray-800 p-4 shadow-md transition",
-        isOver && "bg-gray-700", // Change background when draggable is over
+        isOver && "bg-gray-700",
+        className,
       )}
+      {...props}
     >
-      <h2 className="mb-4 text-lg font-bold text-gray-200">{title}</h2>
-      {/* <div className="flex flex-col gap-2">
-        {tasks.map((task) => (
-          <TaskCard key={task.id} text={task.text} id={task.id} />
+      <h2 className="mb-4 text-lg font-bold text-gray-200">{column.name}</h2>
+      <div className="flex flex-col gap-2">
+        {column.tasks.map((task) => (
+          <TaskCard key={task.id} task={task} />
         ))}
-      </div> */}
+      </div>
     </div>
   );
 };

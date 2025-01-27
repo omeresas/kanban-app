@@ -19,14 +19,8 @@ const Board = ({ board, className, ...props }: BoardProps) => {
         )}
         {...props}
       >
-        {/* Render columns from the board */}
         {board.columns.map((column) => (
-          <BoardColumn
-            key={column.id}
-            id={column.id}
-            title={column.name}
-            tasks={column.tasks}
-          />
+          <BoardColumn key={column.id} column={column} />
         ))}
         <NewColumnButton />
       </div>
