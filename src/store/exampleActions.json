@@ -1,0 +1,78 @@
+{
+  "actions": [
+    {
+      "type": "addBoard",
+      "payload": {
+        "id": 4,
+        "name": "New Board",
+        "columns": []
+      }
+    },
+    {
+      "type": "removeBoard",
+      "payload": 1
+    },
+    {
+      "type": "addColumn",
+      "payload": {
+        "boardId": 0,
+        "column": {
+          "id": 1,
+          "name": "New Column",
+          "tasks": []
+        }
+      }
+    },
+    {
+      "type": "removeColumn",
+      "payload": {
+        "boardId": 0,
+        "columnId": 1
+      }
+    },
+    {
+      "type": "addTask",
+      "payload": {
+        "boardId": 0,
+        "columnId": 1,
+        "task": {
+          "id": 1,
+          "title": "New Task",
+          "description": "This is a new task",
+          "status": "Todo",
+          "statusId": 1,
+          "subtasks": []
+        }
+      }
+    },
+    {
+      "type": "updateTask",
+      "payload": {
+        "boardId": 0,
+        "columnId": 1,
+        "taskId": 1,
+        "updatedTask": {
+          "title": "Updated Task Title",
+          "description": "Updated description"
+        }
+      }
+    },
+    {
+      "type": "removeTask",
+      "payload": {
+        "boardId": 0,
+        "columnId": 1,
+        "taskId": 1
+      }
+    },
+    {
+      "type": "toggleSubtask",
+      "payload": {
+        "boardId": 0,
+        "columnId": 1,
+        "taskId": 1,
+        "subtaskIndex": 0
+      }
+    }
+  ]
+}

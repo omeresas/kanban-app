@@ -1,12 +1,15 @@
+import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
-import Task from "./Task";
 
-interface BoardColumnProps {
-  title: string;
-  tasks: { id: string; text: string }[];
-  id: string;
-}
+import TaskCard from "./TaskCard";
+import { type Task } from "@/store/types";
+
+type BoardColumnProps = ComponentPropsWithoutRef<"div"> & {
+  id: number;
+  name: string;
+  tasks: Task[];
+};
 
 const BoardColumn = ({ title, tasks, id }: BoardColumnProps) => {
   const { isOver, setNodeRef } = useDroppable({ id }); // Unique ID for the droppable
@@ -21,11 +24,11 @@ const BoardColumn = ({ title, tasks, id }: BoardColumnProps) => {
       )}
     >
       <h2 className="mb-4 text-lg font-bold text-gray-200">{title}</h2>
-      <div className="flex flex-col gap-2">
+      {/* <div className="flex flex-col gap-2">
         {tasks.map((task) => (
-          <Task key={task.id} text={task.text} id={task.id} />
+          <TaskCard key={task.id} text={task.text} id={task.id} />
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };

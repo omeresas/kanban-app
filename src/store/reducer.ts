@@ -1,6 +1,11 @@
+import { produce } from "immer";
 import { Board, Column, Task } from "./types";
 
-export type KanbanAction =
+type KanbanState = {
+  boards: Board[];
+};
+
+type KanbanAction =
   | { type: "addBoard"; payload: Board }
   | { type: "removeBoard"; payload: number }
   | { type: "addColumn"; payload: { boardId: number; column: Column } }
@@ -33,121 +38,95 @@ export type KanbanAction =
     };
 
 export const kanbanReducer = (
-  state: Board[],
+  state: KanbanState,
   action: KanbanAction,
-): Board[] => {
-  switch (action.type) {
-    case "addBoard":
-      return [...state, action.payload];
+): KanbanState => {
+  return produce(state, (draft) => {
+    switch (action.type) {
+      case "addBoard": {
+        draft.boards.push(action.payload);
+        break;
+      }
 
-    case "removeBoard":
-      return state.filter((board) => board.id !== action.payload);
+      case "removeBoard": {
+        draft.boards = draft.boards.filter(
+          (board) => board.id !== action.payload,
+        );
+        break;
+      }
 
-    case "addColumn":
-      return state.map((board) =>
-        board.id === action.payload.boardId
-          ? { ...board, columns: [...board.columns, action.payload.column] }
-          : board,
-      );
+      case "addColumn": {
+        const boardToAddColumn = draft.boards.find(
+          (board) => board.id === action.payload.boardId,
+        );
+        if (boardToAddColumn) {
+          boardToAddColumn.columns.push(action.payload.column);
+        }
+        break;
+      }
 
-    case "removeColumn":
-      return state.map((board) =>
-        board.id === action.payload.boardId
-          ? {
-              ...board,
-              columns: board.columns.filter(
-                (col) => col.id !== action.payload.columnId,
-              ),
-            }
-          : board,
-      );
+      case "removeColumn": {
+        const boardToRemoveColumn = draft.boards.find(
+          (board) => board.id === action.payload.boardId,
+        );
+        if (boardToRemoveColumn) {
+          boardToRemoveColumn.columns = boardToRemoveColumn.columns.filter(
+            (col) => col.id !== action.payload.columnId,
+          );
+        }
+        break;
+      }
 
-    case "addTask":
-      return state.map((board) =>
-        board.id === action.payload.boardId
-          ? {
-              ...board,
-              columns: board.columns.map((column) =>
-                column.id === action.payload.columnId
-                  ? { ...column, tasks: [...column.tasks, action.payload.task] }
-                  : column,
-              ),
-            }
-          : board,
-      );
+      case "addTask": {
+        draft.boards
+          .find((board) => board.id === action.payload.boardId)
+          ?.columns.find((column) => column.id === action.payload.columnId)
+          ?.tasks.push(action.payload.task);
+        break;
+      }
 
-    case "updateTask":
-      return state.map((board) =>
-        board.id === action.payload.boardId
-          ? {
-              ...board,
-              columns: board.columns.map((column) =>
-                column.id === action.payload.columnId
-                  ? {
-                      ...column,
-                      tasks: column.tasks.map((task) =>
-                        task.id === action.payload.taskId
-                          ? { ...task, ...action.payload.updatedTask }
-                          : task,
-                      ),
-                    }
-                  : column,
-              ),
-            }
-          : board,
-      );
+      case "removeTask": {
+        const columnToRemoveTask = draft.boards
+          .find((board) => board.id === action.payload.boardId)
+          ?.columns.find((column) => column.id === action.payload.columnId);
 
-    case "removeTask":
-      return state.map((board) =>
-        board.id === action.payload.boardId
-          ? {
-              ...board,
-              columns: board.columns.map((column) =>
-                column.id === action.payload.columnId
-                  ? {
-                      ...column,
-                      tasks: column.tasks.filter(
-                        (task) => task.id !== action.payload.taskId,
-                      ),
-                    }
-                  : column,
-              ),
-            }
-          : board,
-      );
+        if (columnToRemoveTask) {
+          columnToRemoveTask.tasks = columnToRemoveTask.tasks.filter(
+            (task) => task.id !== action.payload.taskId,
+          );
+        }
+        break;
+      }
 
-    case "toggleSubtask":
-      return state.map((board) =>
-        board.id === action.payload.boardId
-          ? {
-              ...board,
-              columns: board.columns.map((column) =>
-                column.id === action.payload.columnId
-                  ? {
-                      ...column,
-                      tasks: column.tasks.map((task) =>
-                        task.id === action.payload.taskId
-                          ? {
-                              ...task,
-                              subtasks: task.subtasks.map((subtask, index) =>
-                                index === action.payload.subtaskIndex
-                                  ? {
-                                      ...subtask,
-                                      isCompleted: !subtask.isCompleted,
-                                    }
-                                  : subtask,
-                              ),
-                            }
-                          : task,
-                      ),
-                    }
-                  : column,
-              ),
-            }
-          : board,
-      );
+      case "updateTask": {
+        const taskToUpdate = draft.boards
+          .find((board) => board.id === action.payload.boardId)
+          ?.columns.find((column) => column.id === action.payload.columnId)
+          ?.tasks.find((task) => task.id === action.payload.taskId);
 
-    default:
-      throw new Error(`Unknown action: ${action}`);
-  }
+        if (taskToUpdate) {
+          Object.assign(taskToUpdate, action.payload.updatedTask);
+        }
+        break;
+      }
+
+      case "toggleSubtask": {
+        const subtaskToToggle = draft.boards
+          .find((board) => board.id === action.payload.boardId)
+          ?.columns.find((column) => column.id === action.payload.columnId)
+          ?.tasks.find((task) => task.id === action.payload.taskId)?.subtasks[
+          action.payload.subtaskIndex
+        ];
+
+        if (subtaskToToggle) {
+          subtaskToToggle.isCompleted = !subtaskToToggle.isCompleted;
+        }
+        break;
+      }
+
+      default: {
+        throw new Error(`Unknown action: ${action}`);
+      }
+    }
+  });
 };

@@ -1,16 +1,15 @@
 import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
+import { DndContext } from "@dnd-kit/core";
 
 import { BoardColumn, NewColumnButton } from "./BoardColumn";
-import data from "@/data/fakedata.json"; // Adjust the path based on your file structure
-import { DndContext } from "@dnd-kit/core";
 import { type Board } from "@/store/types";
 
 type BoardProps = ComponentPropsWithoutRef<"div"> & {
   board: Board;
 };
 
-const Board = ({ className, ...props }: BoardProps) => {
+const Board = ({ board, className, ...props }: BoardProps) => {
   return (
     <DndContext>
       <div
@@ -20,11 +19,12 @@ const Board = ({ className, ...props }: BoardProps) => {
         )}
         {...props}
       >
-        {data.columns.map((column) => (
+        {/* Render columns from the board */}
+        {board.columns.map((column) => (
           <BoardColumn
             key={column.id}
             id={column.id}
-            title={column.title}
+            title={column.name}
             tasks={column.tasks}
           />
         ))}

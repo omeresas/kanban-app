@@ -2,14 +2,14 @@ import Logo from "@/components/Logo/Logo";
 import Header from "@/components/Header/Header";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import Board from "@/components/Board/Board";
-import useKanbanStore from "./store/store";
+import useKanbanStore from "@/store/store";
 
 function App() {
-  const boards = useKanbanStore((state) => state.boards);
-  const selectedBoardId = 0;
-  const selectedBoard = boards.find(
-    (board) => board.id === selectedBoardId,
+  // Get the board with ID 0 using the custom hook
+  const selectedBoard = useKanbanStore((state) =>
+    state.boards.find((board) => board.id === 0),
   ) as Board;
+
   return (
     <div className="grid h-screen grid-cols-[auto_1fr] grid-rows-[auto_1fr]">
       <Logo className="col-start-1 row-start-1 bg-blue-200" />
