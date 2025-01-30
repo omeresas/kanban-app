@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { redux, devtools } from "zustand/middleware";
+import { UniqueIdentifier } from "@dnd-kit/core";
+
 import initialState from "./initialState.json";
 import { kanbanReducer } from "./reducer";
 import type { Board, Column, Task } from "./types";
@@ -10,32 +12,46 @@ export type KanbanState = {
 
 export type KanbanAction =
   | { type: "addBoard"; payload: Board }
-  | { type: "removeBoard"; payload: number }
-  | { type: "addColumn"; payload: { boardId: number; column: Column } }
-  | { type: "removeColumn"; payload: { boardId: number; columnId: number } }
+  | { type: "removeBoard"; payload: UniqueIdentifier }
+  | {
+      type: "addColumn";
+      payload: { boardId: UniqueIdentifier; column: Column };
+    }
+  | {
+      type: "removeColumn";
+      payload: { boardId: UniqueIdentifier; columnId: UniqueIdentifier };
+    }
   | {
       type: "addTask";
-      payload: { boardId: number; columnId: number; task: Task };
+      payload: {
+        boardId: UniqueIdentifier;
+        columnId: UniqueIdentifier;
+        task: Task;
+      };
     }
   | {
       type: "updateTask";
       payload: {
-        boardId: number;
-        columnId: number;
-        taskId: number;
+        boardId: UniqueIdentifier;
+        columnId: UniqueIdentifier;
+        taskId: UniqueIdentifier;
         updatedTask: Partial<Task>;
       };
     }
   | {
       type: "removeTask";
-      payload: { boardId: number; columnId: number; taskId: number };
+      payload: {
+        boardId: UniqueIdentifier;
+        columnId: UniqueIdentifier;
+        taskId: UniqueIdentifier;
+      };
     }
   | {
       type: "toggleSubtask";
       payload: {
-        boardId: number;
-        columnId: number;
-        taskId: number;
+        boardId: UniqueIdentifier;
+        columnId: UniqueIdentifier;
+        taskId: UniqueIdentifier;
         subtaskIndex: number;
       };
     };
