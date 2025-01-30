@@ -7,6 +7,15 @@ import Sidebar from "@/components/Sidebar/Sidebar";
 import Board from "@/components/Board/Board";
 import useKanbanStore from "@/store/store";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
 function App() {
   const [selectedBoardId, setSelectedBoardId] =
     useState<UniqueIdentifier | null>(0);
@@ -22,7 +31,7 @@ function App() {
         selectedBoardId={selectedBoardId}
         setSelectedBoardId={setSelectedBoardId}
       />
-      {selectedBoard ? (
+      {/* {selectedBoard ? (
         <Board
           className="col-start-2 row-start-2 bg-purple-200"
           board={selectedBoard}
@@ -31,7 +40,19 @@ function App() {
         <div className="col-start-2 row-start-2 flex items-center justify-center text-xl">
           No boards available. Please add a new board.
         </div>
-      )}
+      )} */}
+      <Dialog>
+        <DialogTrigger>Open</DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
