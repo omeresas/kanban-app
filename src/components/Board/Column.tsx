@@ -1,15 +1,16 @@
 import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
+import { Button } from "@/components/ui/button";
 
 import TaskCard from "./Task";
 import { type Column } from "@/store/types";
 
-type BoardColumnProps = ComponentPropsWithoutRef<"div"> & {
+type ColumnProps = ComponentPropsWithoutRef<"div"> & {
   column: Column;
 };
 
-const BoardColumn = ({ column, className, ...props }: BoardColumnProps) => {
+const Column = ({ column, className, ...props }: ColumnProps) => {
   const { isOver, setNodeRef } = useDroppable({ id: `column-${column.id}` });
   console.log("isOver", isOver);
 
@@ -35,10 +36,10 @@ const BoardColumn = ({ column, className, ...props }: BoardColumnProps) => {
 
 const NewColumnButton = () => {
   return (
-    <button className="flex items-center justify-center rounded-lg bg-gray-700 p-4 text-gray-400 shadow-md transition hover:bg-gray-600">
+    <Button className="bg-gray-700 p-4 text-gray-400 shadow-md transition hover:bg-gray-600">
       + New Column
-    </button>
+    </Button>
   );
 };
 
-export { BoardColumn, NewColumnButton };
+export { Column, NewColumnButton };
