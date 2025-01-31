@@ -2,7 +2,6 @@ import { produce } from "immer";
 import { UniqueIdentifier } from "@dnd-kit/core";
 import type { KanbanState, KanbanAction } from "@/store/store";
 import type { Board, Column, Task } from "@/store/types";
-import { addBoard, removeBoard } from "@/store/actionHandlers";
 
 export const kanbanReducer = (
   state: KanbanState,
@@ -14,92 +13,168 @@ export const kanbanReducer = (
         addBoard(draft, action.payload.name);
         break;
 
-      case "removeBoard": {
-        removeBoard(draft, action.payload.id);
+      case "removeBoard":
+        removeBoard(draft, action.payload);
         break;
-      }
 
-      case "addColumn": {
-        const boardToAddColumn = draft.boards.find(
-          (board) => board.id === action.payload.boardId,
+      case "addColumn":
+        addColumn(draft, action.payload.boardId, action.payload.name);
+        break;
+
+      case "removeColumn":
+        removeColumn(draft, action.payload.boardId, action.payload.columnId);
+        break;
+
+      case "addTask":
+        addTask(
+          draft,
+          action.payload.boardId,
+          action.payload.columnId,
+          action.payload.title,
+          action.payload.description,
         );
-        if (boardToAddColumn) {
-          const newColumn: Column = {
-            id: getNextColumnId(boardToAddColumn),
-            name: action.payload.name,
-            tasks: [],
-          };
-          boardToAddColumn.columns.push(newColumn);
-        }
         break;
-      }
 
-      case "removeColumn": {
-        const boardToRemoveColumn = draft.boards.find(
-          (board) => board.id === action.payload.boardId,
+      case "removeTask":
+        removeTask(
+          draft,
+          action.payload.boardId,
+          action.payload.columnId,
+          action.payload.taskId,
         );
-        if (boardToRemoveColumn) {
-          boardToRemoveColumn.columns = boardToRemoveColumn.columns.filter(
-            (col) => col.id !== action.payload.columnId,
-          );
-        }
         break;
-      }
 
-      case "addTask": {
-        draft.boards
-          .find((board) => board.id === action.payload.boardId)
-          ?.columns.find((column) => column.id === action.payload.columnId)
-          ?.tasks.push(action.payload.task);
+      case "updateTask":
+        updateTask(
+          draft,
+          action.payload.boardId,
+          action.payload.columnId,
+          action.payload.taskId,
+          action.payload.updatedTask,
+        );
         break;
-      }
 
-      case "removeTask": {
-        const columnToRemoveTask = draft.boards
-          .find((board) => board.id === action.payload.boardId)
-          ?.columns.find((column) => column.id === action.payload.columnId);
-
-        if (columnToRemoveTask) {
-          columnToRemoveTask.tasks = columnToRemoveTask.tasks.filter(
-            (task) => task.id !== action.payload.taskId,
-          );
-        }
+      case "toggleSubtask":
+        toggleSubtask(
+          draft,
+          action.payload.boardId,
+          action.payload.columnId,
+          action.payload.taskId,
+          action.payload.subtaskIndex,
+        );
         break;
-      }
 
-      case "updateTask": {
-        const taskToUpdate = draft.boards
-          .find((board) => board.id === action.payload.boardId)
-          ?.columns.find((column) => column.id === action.payload.columnId)
-          ?.tasks.find((task) => task.id === action.payload.taskId);
-
-        if (taskToUpdate) {
-          Object.assign(taskToUpdate, action.payload.updatedTask);
-        }
-        break;
-      }
-
-      case "toggleSubtask": {
-        const subtaskToToggle = draft.boards
-          .find((board) => board.id === action.payload.boardId)
-          ?.columns.find((column) => column.id === action.payload.columnId)
-          ?.tasks.find((task) => task.id === action.payload.taskId)?.subtasks[
-          action.payload.subtaskIndex
-        ];
-
-        if (subtaskToToggle) {
-          subtaskToToggle.isCompleted = !subtaskToToggle.isCompleted;
-        }
-        break;
-      }
-
-      default: {
-        throw new Error(`Unknown action: ${action}`);
-      }
+      default:
+        throw new Error(`Unknown action: ${action.type}`);
     }
   });
 };
 
+function addBoard(draft: KanbanState, name: string) {
+  const newBoard: Board = {
+    id: getNextBoardId(draft.boards),
+    name,
+    columns: [],
+  };
+  draft.boards.push(newBoard);
+}
+
+function removeBoard(draft: KanbanState, id: UniqueIdentifier) {
+  draft.boards = draft.boards.filter((board) => board.id !== id);
+}
+
+function addColumn(
+  draft: KanbanState,
+  boardId: UniqueIdentifier,
+  name: string,
+) {
+  const board = draft.boards.find((b) => b.id === boardId);
+  if (board) {
+    const newColumn: Column = { id: getNextColumnId(board), name, tasks: [] };
+    board.columns.push(newColumn);
+  }
+}
+
+function removeColumn(
+  draft: KanbanState,
+  boardId: UniqueIdentifier,
+  columnId: UniqueIdentifier,
+) {
+  const board = draft.boards.find((b) => b.id === boardId);
+  if (board) {
+    board.columns = board.columns.filter((column) => column.id !== columnId);
+  }
+}
+
+function addTask(
+  draft: KanbanState,
+  boardId: UniqueIdentifier,
+  columnId: UniqueIdentifier,
+  title: string,
+  description = "",
+) {
+  const board = draft.boards.find((b) => b.id === boardId);
+  const column = board?.columns.find((c) => c.id === columnId);
+  if (column) {
+    const newTask: Task = {
+      id: getNextTaskId(board),
+      title,
+      description,
+      status: column.name,
+      statusId: column.id,
+      subtasks: [],
+    };
+    column.tasks.push(newTask);
+  }
+}
+
+function removeTask(
+  draft: KanbanState,
+  boardId: UniqueIdentifier,
+  columnId: UniqueIdentifier,
+  taskId: UniqueIdentifier,
+) {
+  const column = draft.boards
+    .find((b) => b.id === boardId)
+    ?.columns.find((c) => c.id === columnId);
+  if (column) {
+    column.tasks = column.tasks.filter((task) => task.id !== taskId);
+  }
+}
+
+function updateTask(
+  draft: KanbanState,
+  boardId: UniqueIdentifier,
+  columnId: UniqueIdentifier,
+  taskId: UniqueIdentifier,
+  updatedTask: Partial<Task>,
+) {
+  const task = draft.boards
+    .find((b) => b.id === boardId)
+    ?.columns.find((c) => c.id === columnId)
+    ?.tasks.find((t) => t.id === taskId);
+  if (task) {
+    Object.assign(task, updatedTask);
+  }
+}
+
+function toggleSubtask(
+  draft: KanbanState,
+  boardId: UniqueIdentifier,
+  columnId: UniqueIdentifier,
+  taskId: UniqueIdentifier,
+  subtaskIndex: number,
+) {
+  const subtask = draft.boards
+    .find((b) => b.id === boardId)
+    ?.columns.find((c) => c.id === columnId)
+    ?.tasks.find((t) => t.id === taskId)?.subtasks[subtaskIndex];
+  if (subtask) {
+    subtask.isCompleted = !subtask.isCompleted;
+  }
+}
+
+// Helper functions
 function toNumber(id: UniqueIdentifier): number {
   return typeof id === "number" ? id : parseInt(id, 10) || 0;
 }

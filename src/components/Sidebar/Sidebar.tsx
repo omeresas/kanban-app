@@ -36,14 +36,30 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
   ({ selectedBoardId, setSelectedBoardId, className, ...props }, ref) => {
     const boardNamesIds = useKanbanStore(useBoardNamesIds);
     const dispatch = useKanbanStore((state) => state.dispatch);
-    const [boardName, setBoardName] = useState("");
+    const [newBoardName, setNewBoardName] = useState("");
+    const [open, setOpen] = useState(false);
 
-    const handleAddBoard = () => {
-      if (boardName.trim() !== "") {
-        dispatch({ type: "addBoard", payload: { name: boardName } });
+    function handleAddBoard() {
+      if (newBoardName.trim() !== "") {
+        dispatch({ type: "addBoard", payload: { name: newBoardName } });
       }
-      setBoardName("");
-    };
+      setNewBoardName("");
+      setOpen(false);
+    }
+
+    function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        handleAddBoard();
+      }
+    }
+
+    function handleOnOpenChange(open: boolean) {
+      if (!open) {
+        setNewBoardName("");
+      }
+      setOpen(open);
+    }
 
     return (
       <aside
@@ -72,7 +88,7 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
         </ul>
 
         {/* Dialog for Adding a Board */}
-        <Dialog onOpenChange={(open) => !open && setBoardName("")}>
+        <Dialog open={open} onOpenChange={handleOnOpenChange}>
           <DialogTrigger asChild>
             <Button className="mt-4 w-full">+ Add Board</Button>
           </DialogTrigger>
@@ -86,8 +102,9 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
             <input
               type="text"
               placeholder="Board Name"
-              value={boardName}
-              onChange={(e) => setBoardName(e.target.value)}
+              value={newBoardName}
+              onKeyDown={handleKeyDown}
+              onChange={(e) => setNewBoardName(e.target.value)}
               className="w-full rounded-md border p-2"
             />
             <DialogFooter>
