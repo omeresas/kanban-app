@@ -11,11 +11,19 @@ export type KanbanState = {
 };
 
 export type KanbanAction =
-  | { type: "addBoard"; payload: Board }
-  | { type: "removeBoard"; payload: UniqueIdentifier }
+  | {
+      type: "addBoard";
+      payload: { name: string };
+    }
+  | {
+      type: "removeBoard";
+      payload: {
+        id: UniqueIdentifier;
+      };
+    }
   | {
       type: "addColumn";
-      payload: { boardId: UniqueIdentifier; column: Column };
+      payload: { name: string };
     }
   | {
       type: "removeColumn";

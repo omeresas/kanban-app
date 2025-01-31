@@ -31,7 +31,7 @@ function App() {
         selectedBoardId={selectedBoardId}
         setSelectedBoardId={setSelectedBoardId}
       />
-      {/* {selectedBoard ? (
+      {selectedBoard ? (
         <Board
           className="col-start-2 row-start-2 bg-purple-200"
           board={selectedBoard}
@@ -40,7 +40,7 @@ function App() {
         <div className="col-start-2 row-start-2 flex items-center justify-center text-xl">
           No boards available. Please add a new board.
         </div>
-      )} */}
+      )}
       <Dialog>
         <DialogTrigger>Open</DialogTrigger>
         <DialogContent>

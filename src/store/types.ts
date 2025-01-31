@@ -17,7 +17,7 @@ export type Task = {
   title: string;
   description: string;
   status: string;
-  statusId: number;
+  statusId: UniqueIdentifier;
   subtasks: Subtask[];
 };
 

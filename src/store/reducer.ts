@@ -1,5 +1,8 @@
 import { produce } from "immer";
+import { UniqueIdentifier } from "@dnd-kit/core";
 import type { KanbanState, KanbanAction } from "@/store/store";
+import type { Board, Column, Task } from "@/store/types";
+import { addBoard, removeBoard } from "@/store/actionHandlers";
 
 export const kanbanReducer = (
   state: KanbanState,
@@ -7,15 +10,12 @@ export const kanbanReducer = (
 ): KanbanState => {
   return produce(state, (draft) => {
     switch (action.type) {
-      case "addBoard": {
-        draft.boards.push(action.payload);
+      case "addBoard":
+        addBoard(draft, action.payload.name);
         break;
-      }
 
       case "removeBoard": {
-        draft.boards = draft.boards.filter(
-          (board) => board.id !== action.payload,
-        );
+        removeBoard(draft, action.payload.id);
         break;
       }
 
@@ -24,7 +24,12 @@ export const kanbanReducer = (
           (board) => board.id === action.payload.boardId,
         );
         if (boardToAddColumn) {
-          boardToAddColumn.columns.push(action.payload.column);
+          const newColumn: Column = {
+            id: getNextColumnId(boardToAddColumn),
+            name: action.payload.name,
+            tasks: [],
+          };
+          boardToAddColumn.columns.push(newColumn);
         }
         break;
       }
@@ -94,3 +99,23 @@ export const kanbanReducer = (
     }
   });
 };
+
+function toNumber(id: UniqueIdentifier): number {
+  return typeof id === "number" ? id : parseInt(id, 10) || 0;
+}
+
+function getNextBoardId(boards: Board[]): UniqueIdentifier {
+  if (boards.length === 0) return 0;
+  return Math.max(...boards.map((board) => toNumber(board.id))) + 1;
+}
+
+function getNextColumnId(board: Board): UniqueIdentifier {
+  if (board.columns.length === 0) return 0;
+  return Math.max(...board.columns.map((column) => toNumber(column.id))) + 1;
+}
+
+function getNextTaskId(board: Board): UniqueIdentifier {
+  const allTasks = board.columns.flatMap((column) => column.tasks);
+  if (allTasks.length === 0) return 0;
+  return Math.max(...allTasks.map((task) => toNumber(task.id))) + 1;
+}
