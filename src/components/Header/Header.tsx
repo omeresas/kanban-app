@@ -2,6 +2,7 @@ import { ComponentPropsWithRef } from "react";
 import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "../theme/ThemeToggle";
 
 type HeaderProps = ComponentPropsWithRef<"div"> & {
   boardTitle?: string;
@@ -21,6 +22,7 @@ const Header = ({
       <div className="flex gap-2">
         <Button>Button 1</Button>
         <Button>Button 2</Button>
+        <ThemeToggle />
       </div>
     </div>
   );
