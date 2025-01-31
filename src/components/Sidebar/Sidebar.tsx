@@ -16,6 +16,7 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import { Input } from "../ui/input";
 
 const useBoardNamesIds = memoize<
   KanbanState,
@@ -99,7 +100,7 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                 Enter a name for the new board.
               </DialogDescription>
             </DialogHeader>
-            <input
+            <Input
               type="text"
               placeholder="Board Name"
               value={newBoardName}

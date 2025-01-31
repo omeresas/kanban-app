@@ -18,7 +18,7 @@ const Column = ({ column, className, ...props }: ColumnProps) => {
     <div
       ref={setNodeRef}
       className={cn(
-        "flex flex-col bg-gray-800 p-4 shadow-md transition",
+        "bg-column flex flex-col p-4 shadow-md transition",
         isOver && "bg-gray-700",
         className,
       )}
