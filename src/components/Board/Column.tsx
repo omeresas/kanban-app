@@ -11,17 +11,12 @@ type ColumnProps = ComponentPropsWithoutRef<"div"> & {
 };
 
 const Column = ({ column, className, ...props }: ColumnProps) => {
-  const { isOver, setNodeRef } = useDroppable({ id: `column-${column.id}` });
-  console.log("isOver", isOver);
+  const { setNodeRef } = useDroppable({ id: `column-${column.id}` });
 
   return (
     <div
       ref={setNodeRef}
-      className={cn(
-        "bg-column flex flex-col p-4 shadow-md transition",
-        isOver && "bg-gray-700",
-        className,
-      )}
+      className={cn("flex flex-col p-4 shadow-md transition", className)}
       {...props}
     >
       <h2 className="mb-4 text-lg font-bold text-gray-200">{column.name}</h2>
@@ -34,12 +29,9 @@ const Column = ({ column, className, ...props }: ColumnProps) => {
   );
 };
 
+// TODO: Fix + with + icon
 const NewColumnButton = () => {
-  return (
-    <Button className="bg-gray-700 p-4 text-gray-400 shadow-md transition hover:bg-gray-600">
-      + New Column
-    </Button>
-  );
+  return <Button>+ New Column</Button>;
 };
 
 export { Column, NewColumnButton };

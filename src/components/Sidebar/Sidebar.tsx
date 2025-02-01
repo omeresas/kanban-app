@@ -65,10 +65,7 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
     return (
       <aside
         ref={ref}
-        className={cn(
-          "flex flex-col items-start gap-4 bg-gray-800 p-4 text-gray-200",
-          className,
-        )}
+        className={cn("flex flex-col items-start gap-4 p-4", className)}
         {...props}
       >
         <h1 className="text-xl font-bold">Boards</h1>
@@ -78,8 +75,8 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
               <Button
                 onClick={() => setSelectedBoardId(board.id)}
                 className={cn(
-                  "w-full rounded-md bg-pink-600 p-2 text-left transition hover:bg-gray-700",
-                  board.id === selectedBoardId && "bg-gray-700 text-white",
+                  "w-full rounded-md p-2 text-left transition-colors",
+                  board.id === selectedBoardId && "text-red-500",
                 )}
               >
                 {board.name}

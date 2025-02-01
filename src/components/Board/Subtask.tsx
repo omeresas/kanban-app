@@ -10,7 +10,7 @@ const Subtask = ({ title, isCompleted, onToggle }: SubtaskProps) => {
   return (
     <div
       className={cn(
-        "flex items-center gap-2 rounded-md bg-gray-800 p-2 transition hover:bg-gray-700",
+        "flex items-center gap-2 rounded-md p-2 transition",
         isCompleted && "opacity-60",
       )}
     >
@@ -19,17 +19,10 @@ const Subtask = ({ title, isCompleted, onToggle }: SubtaskProps) => {
         type="checkbox"
         checked={isCompleted}
         onChange={onToggle}
-        className="h-4 w-4 cursor-pointer rounded border-gray-600 bg-gray-900 text-blue-500"
+        className="h-4 w-4 cursor-pointer rounded border-gray-600"
       />
       {/* Subtask title */}
-      <span
-        className={cn(
-          "text-sm text-gray-200",
-          isCompleted && "text-gray-500 line-through",
-        )}
-      >
-        {title}
-      </span>
+      <span className={cn(isCompleted && "line-through")}>{title}</span>
     </div>
   );
 };

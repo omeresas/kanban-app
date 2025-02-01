@@ -132,7 +132,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border border-2;
   }
   body {
     @apply bg-background text-foreground;

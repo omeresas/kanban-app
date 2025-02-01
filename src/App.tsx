@@ -18,10 +18,10 @@ function App() {
   return (
     <ThemeProvider>
       <div className="grid h-screen grid-cols-[auto_1fr] grid-rows-[auto_1fr]">
-        <Logo className="col-start-1 row-start-1 bg-blue-200" />
-        <Header className="col-start-2 row-start-1 bg-red-200" />
+        <Logo className="col-start-1 row-start-1" />
+        <Header className="col-start-2 row-start-1" />
         <Sidebar
-          className="col-start-1 row-start-2 bg-yellow-200"
+          className="col-start-1 row-start-2"
           selectedBoardId={selectedBoardId}
           setSelectedBoardId={setSelectedBoardId}
         />
