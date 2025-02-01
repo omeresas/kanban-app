@@ -14,7 +14,7 @@ const Board = ({ board, className, ...props }: BoardProps) => {
     <DndContext>
       <div
         className={cn(
-          "grid auto-cols-[300px] grid-flow-col items-start gap-6 p-6",
+          "bg-background grid auto-cols-[300px] grid-flow-col items-start gap-6 p-6",
           className,
         )}
         {...props}

@@ -17,7 +17,7 @@ function App() {
 
   return (
     <ThemeProvider>
-      <div className="grid h-screen grid-cols-[auto_1fr] grid-rows-[auto_1fr]">
+      <div className="grid h-screen grid-cols-[auto_1fr] grid-rows-[auto_1fr] gap-0.25 bg-gray-200">
         <Logo className="col-start-1 row-start-1" />
         <Header className="col-start-2 row-start-1" />
         <Sidebar

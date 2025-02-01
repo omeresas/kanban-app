@@ -15,7 +15,10 @@ const Header = ({
 }: HeaderProps) => {
   return (
     <div
-      className={cn("flex items-center justify-evenly", className)}
+      className={cn(
+        "bg-background flex items-center justify-evenly",
+        className,
+      )}
       {...props}
     >
       <h1 className="text-2xl font-bold">{boardTitle}</h1>
