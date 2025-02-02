@@ -16,10 +16,15 @@ const Column = ({ column, className, ...props }: ColumnProps) => {
   return (
     <div
       ref={setNodeRef}
-      className={cn("bg-secondary flex flex-col p-4 shadow-md", className)}
+      className={cn(
+        "bg-primary flex flex-col rounded-md p-4 shadow-md",
+        className,
+      )}
       {...props}
     >
-      <h2 className="mb-4 text-lg font-bold text-gray-200">{column.name}</h2>
+      <h2 className="text-primary-foreground mb-4 text-lg font-bold">
+        {column.name}
+      </h2>
       <div className="flex flex-col gap-2">
         {column.tasks.map((task) => (
           <TaskCard key={task.id} task={task} />

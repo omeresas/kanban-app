@@ -10,7 +10,7 @@ const Subtask = ({ title, isCompleted, onToggle }: SubtaskProps) => {
   return (
     <div
       className={cn(
-        "flex items-center gap-2 rounded-md p-2 transition",
+        "flex items-center gap-2 rounded-md p-2 transition-colors",
         isCompleted && "opacity-60",
       )}
     >

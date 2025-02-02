@@ -66,21 +66,22 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
       <aside
         ref={ref}
         className={cn(
-          "bg-background flex flex-col items-start gap-4 p-4",
+          "bg-background flex flex-col items-start gap-4 pr-2",
           className,
         )}
         {...props}
       >
-        <h1 className="text-xl font-bold">Boards</h1>
+        <h1 className="p-4 text-lg font-semibold">Boards</h1>
         <ul className="w-full">
           {boardNamesIds.map((board) => (
-            <li key={board.id} className="w-full">
+            <li key={board.id}>
               <Button
                 onClick={() => setSelectedBoardId(board.id)}
-                className={cn(
-                  "w-full rounded-md p-2 text-left transition-colors",
-                  board.id === selectedBoardId && "text-red-500",
-                )}
+                variant={
+                  board.id === selectedBoardId
+                    ? "sidebar_selected"
+                    : "sidebar_unselected"
+                }
               >
                 {board.name}
               </Button>

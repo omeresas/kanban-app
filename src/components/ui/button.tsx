@@ -5,10 +5,14 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer",
+  "flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium hover:transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 cursor-pointer",
   {
     variants: {
       variant: {
+        sidebar_selected:
+          "my-2 w-full rounded-r-full rounded-l-none p-2 text-left bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
+        sidebar_unselected:
+          "my-2 w-full rounded-r-full rounded-l-none p-2 text-left bg-background text-foreground shadow-sm hover:bg-accent",
         default:
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
         destructive:
