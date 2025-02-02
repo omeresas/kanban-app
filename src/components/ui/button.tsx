@@ -10,9 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         sidebar_selected:
-          "my-2 w-full rounded-r-full rounded-l-none p-2 text-left bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
+          "my-2 w-full rounded-r-full justify-start text-md rounded-l-none p-2 pl-6 text-left bg-primary text-primary-foreground shadow-sm hover:bg-primary/90 [&_svg]:size-4.5",
         sidebar_unselected:
-          "my-2 w-full rounded-r-full rounded-l-none p-2 text-left bg-background text-foreground shadow-sm hover:bg-accent",
+          "my-2 w-full rounded-r-full justify-start text-md rounded-l-none p-2 pl-6 text-left bg-background text-foreground shadow-sm hover:bg-accent [&_svg]:size-4.5",
         default:
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
         destructive:
@@ -29,6 +29,7 @@ const buttonVariants = cva(
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
+        auto: "h-auto",
       },
     },
     defaultVariants: {

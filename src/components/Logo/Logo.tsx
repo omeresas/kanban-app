@@ -9,7 +9,7 @@ const Logo = ({ className, ...props }: LogoProps) => {
   return (
     <div
       className={cn(
-        "bg-header-sidebar-background text-header-sidebar-foreground flex items-center gap-2 px-10 py-10",
+        "bg-header-sidebar-background text-header-sidebar-foreground flex items-center gap-2 px-10 py-7",
         className,
       )}
       {...props}

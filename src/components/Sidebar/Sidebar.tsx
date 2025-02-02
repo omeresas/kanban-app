@@ -17,6 +17,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
+import { Table2 } from "lucide-react";
 
 const useBoardNamesIds = memoize<
   KanbanState,
@@ -82,7 +83,9 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
                     ? "sidebar_selected"
                     : "sidebar_unselected"
                 }
+                size="auto"
               >
+                <Table2 strokeWidth={2.2} className="pt-[1px]" />
                 {board.name}
               </Button>
             </li>

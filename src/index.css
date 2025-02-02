@@ -97,7 +97,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-    --app-border: var(--color-red-200);
+    --app-border: var(--color-gray-200);
 
     --board-gradient-start: var(--color-rose-200);
     --board-gradient-middle: var(--color-purple-200);
@@ -139,19 +139,19 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
 
-    --app-border: var(--color-red-200);
+    --app-border: var(--color-gray-200);
 
     --board-gradient-start: var(--color-fuchsia-950);
     --board-gradient-middle: var(--color-violet-950);
     --board-gradient-end: var(--color-slate-950);
 
-    --column-background: var(--color-slate-950);
+    --column-background: var(--color-slate-900);
     --column-foreground: var(--color-white);
 
     --task-background: var(--color-slate-700);
     --task-foreground: var(--color-white);
 
-    --header-sidebar-background: var(--color-gray-950);
+    --header-sidebar-background: var(--color-slate-900);
     --header-sidebar-foreground: var(--color-white);
   }
 }
