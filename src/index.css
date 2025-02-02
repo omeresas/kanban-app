@@ -43,9 +43,20 @@
   --color-chart-4: hsl(var(--chart-4));
   --color-chart-5: hsl(var(--chart-5));
 
-  --color-gradient-start: var(--board-gradient-start);
-  --color-gradient-middle: var(--board-gradient-middle);
-  --color-gradient-end: var(--board-gradient-end);
+  --color-app-border: var(--app-border);
+
+  --color-board-gradient-start: var(--board-gradient-start);
+  --color-board-gradient-middle: var(--board-gradient-middle);
+  --color-board-gradient-end: var(--board-gradient-end);
+
+  --color-column-background: var(--column-background);
+  --color-column-foreground: var(--column-foreground);
+
+  --color-task-background: var(--task-background);
+  --color-task-foreground: var(--task-foreground);
+
+  --color-header-sidebar-background: var(--header-sidebar-background);
+  --color-header-sidebar-foreground: var(--header-sidebar-foreground);
 }
 
 @layer base {
@@ -86,9 +97,20 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-    --board-gradient-start: var(--color-rose-300);
-    --board-gradient-middle: var(--color-purple-300);
-    --board-gradient-end: var(--color-indigo-400);
+    --app-border: var(--color-red-200);
+
+    --board-gradient-start: var(--color-rose-200);
+    --board-gradient-middle: var(--color-purple-200);
+    --board-gradient-end: var(--color-indigo-300);
+
+    --column-background: var(--color-neutral-100);
+    --column-foreground: var(--color-neutral-900);
+
+    --task-background: var(--color-white);
+    --task-foreground: var(--color-gray-900);
+
+    --header-sidebar-background: var(--color-white);
+    --header-sidebar-foreground: var(--color-gray-900);
   }
 
   .dark {
@@ -117,9 +139,20 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
 
-    --board-gradient-start: var(--color-rose-950);
-    --board-gradient-middle: var(--color-purple-950);
-    --board-gradient-end: var(--color-indigo-950);
+    --app-border: var(--color-red-200);
+
+    --board-gradient-start: var(--color-fuchsia-950);
+    --board-gradient-middle: var(--color-violet-950);
+    --board-gradient-end: var(--color-slate-950);
+
+    --column-background: var(--color-slate-950);
+    --column-foreground: var(--color-white);
+
+    --task-background: var(--color-slate-700);
+    --task-foreground: var(--color-white);
+
+    --header-sidebar-background: var(--color-gray-950);
+    --header-sidebar-foreground: var(--color-white);
   }
 }
 

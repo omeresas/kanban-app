@@ -66,7 +66,7 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
       <aside
         ref={ref}
         className={cn(
-          "bg-background flex flex-col items-start gap-4 pr-2",
+          "bg-header-sidebar-background text-header-sidebar-foreground flex flex-col items-start gap-4 pr-2",
           className,
         )}
         {...props}

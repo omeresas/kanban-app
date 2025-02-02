@@ -28,7 +28,10 @@ const Task = ({ task, className, ...props }: TaskProps) => {
       style={style}
       {...listeners}
       {...attributes}
-      className={cn("bg-background cursor-move rounded-md p-3", className)}
+      className={cn(
+        "bg-task-background text-task-foreground cursor-move rounded-md p-3 shadow-md",
+        className,
+      )}
       {...props}
     >
       {task.id}: {task.title}

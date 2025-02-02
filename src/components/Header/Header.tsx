@@ -16,7 +16,7 @@ const Header = ({
   return (
     <div
       className={cn(
-        "bg-background flex items-center justify-evenly",
+        "bg-header-sidebar-background text-header-sidebar-foreground flex items-center justify-evenly",
         className,
       )}
       {...props}
