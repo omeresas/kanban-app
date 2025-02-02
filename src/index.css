@@ -42,6 +42,10 @@
   --color-chart-3: hsl(var(--chart-3));
   --color-chart-4: hsl(var(--chart-4));
   --color-chart-5: hsl(var(--chart-5));
+
+  --color-gradient-start: var(--board-gradient-start);
+  --color-gradient-middle: var(--board-gradient-middle);
+  --color-gradient-end: var(--board-gradient-end);
 }
 
 @layer base {
@@ -81,6 +85,10 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+
+    --board-gradient-start: var(--color-rose-300);
+    --board-gradient-middle: var(--color-purple-300);
+    --board-gradient-end: var(--color-indigo-400);
   }
 
   .dark {
@@ -108,6 +116,10 @@
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+
+    --board-gradient-start: var(--color-rose-950);
+    --board-gradient-middle: var(--color-purple-950);
+    --board-gradient-end: var(--color-indigo-950);
   }
 }
 

@@ -14,7 +14,7 @@ const Board = ({ board, className, ...props }: BoardProps) => {
     <DndContext>
       <div
         className={cn(
-          "bg-background grid auto-cols-[300px] grid-flow-col items-start gap-6 p-6",
+          "from-gradient-start via-gradient-middle to-gradient-end grid auto-cols-[300px] grid-flow-col items-start gap-6 bg-gradient-to-br p-6",
           className,
         )}
         {...props}
