@@ -13,6 +13,13 @@ const buttonVariants = cva(
           "my-2 w-full rounded-r-full justify-start font-medium text-base rounded-l-none p-2 pl-6 text-left bg-selected-board-button-background text-selected-board-button-foreground hover:bg-selected-board-button-background/90 [&_svg]:size-4.5",
         sidebar_unselected:
           "my-2 w-full rounded-r-full justify-start font-medium text-base rounded-l-none p-2 pl-6 text-left bg-not-selected-board-button-background text-not-selected-board-button-foreground hover:bg-accent [&_svg]:size-4.5",
+        add_board:
+          "bg-add-board-button-background text-add-board-button-foreground hover:bg-accent my-2 w-full justify-start rounded-l-none rounded-r-full p-2 pl-6 text-base font-medium [&_svg]:size-4.5",
+        add_column:
+          "bg-column-background text-column-foreground hover:bg-column-background/90",
+        add_column_cancel:
+          "bg-add_column_cancel_background text-add_column_cancel_foreground hover:bg-add_column_cancel_background/90",
+
         default:
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
         destructive:

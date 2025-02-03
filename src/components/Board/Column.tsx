@@ -1,11 +1,9 @@
 import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 import { useDroppable } from "@dnd-kit/core";
-import { Button } from "@/components/ui/button";
 
 import TaskCard from "./Task";
-import { type Column } from "@/store/types";
-import { Plus } from "lucide-react";
+import type { Column } from "@/store/types";
 
 type ColumnProps = ComponentPropsWithoutRef<"div"> & {
   column: Column;
@@ -18,28 +16,21 @@ const Column = ({ column, className, ...props }: ColumnProps) => {
     <div
       ref={setNodeRef}
       className={cn(
-        "bg-column-background text-column-foreground flex flex-col rounded-md p-4 shadow-md",
+        "bg-column-background text-column-foreground flex flex-col gap-4 rounded-md p-4 shadow-md",
         className,
       )}
       {...props}
     >
-      <h2 className="mb-4 text-lg font-bold">{column.name}</h2>
-      <div className="flex flex-col gap-2">
-        {column.tasks.map((task) => (
-          <TaskCard key={task.id} task={task} />
-        ))}
-      </div>
+      <h2 className="text-lg font-bold">{column.name}</h2>
+      {column.tasks.length > 0 && (
+        <div className="flex flex-col gap-2">
+          {column.tasks.map((task) => (
+            <TaskCard key={task.id} task={task} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
-// TODO: Fix + with + icon
-const NewColumnButton = () => {
-  return (
-    <Button className="bg-column-background text-column-foreground">
-      <Plus strokeWidth={3} className="pt-[1px]" /> New Column
-    </Button>
-  );
-};
-
-export { Column, NewColumnButton };
+export default Column;

@@ -74,6 +74,9 @@
 
   --color-add-board-button-background: var(--add-board-button-background);
   --color-add-board-button-foreground: var(--add-board-button-foreground);
+
+  --color-add_column_cancel_background: var(--add_column_cancel_background);
+  --color-add_column_cancel_foreground: var(--add_column_cancel_foreground);
 }
 
 @layer base {
@@ -141,6 +144,9 @@
     --primary: var(--color-indigo-500);
     --primary-foreground: var(--color-slate-100);
 
+    --add_column_cancel_background: var(--color-slate-200);
+    --add_column_cancel_foreground: var(--color-slate-500);
+
     --ring: var(--color-indigo-500);
   }
 
@@ -196,6 +202,9 @@
 
     --primary: var(--color-indigo-500);
     --primary-foreground: var(--color-slate-100);
+
+    --add_column_cancel_background: var(--color-slate-700);
+    --add_column_cancel_foreground: var(--color-slate-300);
 
     --ring: var(--color-indigo-500);
   }

@@ -23,7 +23,7 @@ export type KanbanAction =
     }
   | {
       type: "addColumn";
-      payload: { name: string };
+      payload: { name: string; boardId: UniqueIdentifier };
     }
   | {
       type: "removeColumn";

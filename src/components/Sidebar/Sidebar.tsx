@@ -94,7 +94,7 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
           ))}
           <Dialog open={open} onOpenChange={handleOnOpenChange}>
             <DialogTrigger asChild>
-              <Button className="bg-add-board-button-background text-add-board-button-foreground hover:bg-accent my-2 w-full justify-start rounded-l-none rounded-r-full p-2 pl-6 text-left text-base font-medium shadow-sm [&_svg]:size-4.5">
+              <Button variant="add_board">
                 <Plus strokeWidth={3} className="pt-[1px]" /> Add Board
               </Button>
             </DialogTrigger>
