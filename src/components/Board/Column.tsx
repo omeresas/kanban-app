@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 
 import TaskCard from "./Task";
 import { type Column } from "@/store/types";
+import { Plus } from "lucide-react";
 
 type ColumnProps = ComponentPropsWithoutRef<"div"> & {
   column: Column;
@@ -34,7 +35,11 @@ const Column = ({ column, className, ...props }: ColumnProps) => {
 
 // TODO: Fix + with + icon
 const NewColumnButton = () => {
-  return <Button>+ New Column</Button>;
+  return (
+    <Button className="bg-column-background text-column-foreground">
+      <Plus strokeWidth={3} className="pt-[1px]" /> New Column
+    </Button>
+  );
 };
 
 export { Column, NewColumnButton };

@@ -10,9 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         sidebar_selected:
-          "my-2 w-full rounded-r-full justify-start font-medium text-base rounded-l-none p-2 pl-6 text-left bg-selected-board-button-background text-selected-board-button-foreground shadow-sm hover:bg-selected-board-button-background/90 [&_svg]:size-4.5",
+          "my-2 w-full rounded-r-full justify-start font-medium text-base rounded-l-none p-2 pl-6 text-left bg-selected-board-button-background text-selected-board-button-foreground hover:bg-selected-board-button-background/90 [&_svg]:size-4.5",
         sidebar_unselected:
-          "my-2 w-full rounded-r-full justify-start font-medium text-base rounded-l-none p-2 pl-6 text-left bg-not-selected-board-button-background text-not-selected-board-button-foreground shadow-sm hover:bg-accent [&_svg]:size-4.5",
+          "my-2 w-full rounded-r-full justify-start font-medium text-base rounded-l-none p-2 pl-6 text-left bg-not-selected-board-button-background text-not-selected-board-button-foreground hover:bg-accent [&_svg]:size-4.5",
         default:
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
         destructive:
