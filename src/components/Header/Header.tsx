@@ -1,15 +1,17 @@
 import { ComponentPropsWithRef } from "react";
 import { cn } from "@/lib/utils";
 
-import { ThemeToggle } from "../theme/ThemeToggle";
-import BoardOptions from "./BoardOptions";
-import type { Board } from "@/store/types";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
+import BoardOptions from "@/components/Header/BoardOptions";
+import useKanbanStore from "@/store/store";
 
-type HeaderProps = ComponentPropsWithRef<"div"> & {
-  selectedBoard?: Board;
-};
+type HeaderProps = ComponentPropsWithRef<"div">;
 
-const Header = ({ selectedBoard, className, ...props }: HeaderProps) => {
+const Header = ({ className, ...props }: HeaderProps) => {
+  const selectedBoard = useKanbanStore((state) =>
+    state.boards.find((board) => board.id === state.selectedBoardId),
+  );
+
   return (
     <div
       className={cn(
@@ -19,7 +21,9 @@ const Header = ({ selectedBoard, className, ...props }: HeaderProps) => {
       {...props}
     >
       <div className="flex w-[calc(100vw-255px)] items-center justify-between">
-        <h1 className="ml-10 text-2xl font-bold">{selectedBoard?.name}</h1>
+        <h1 className="ml-10 text-2xl font-bold">
+          {selectedBoard?.name ?? "No Board Available"}
+        </h1>
         <div className="mr-10 flex gap-2">
           {selectedBoard && <BoardOptions boardId={selectedBoard.id} />}
           <ThemeToggle />

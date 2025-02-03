@@ -10,7 +10,7 @@ export function ThemeToggle() {
   };
 
   return (
-    <Button variant="outline" size="icon" onClick={toggleTheme}>
+    <Button variant="ghost" size="icon" onClick={toggleTheme}>
       {theme === "dark" ? <Sun /> : <Moon />}
     </Button>
   );

@@ -4,13 +4,14 @@ import { DndContext } from "@dnd-kit/core";
 
 import Column from "@/components/Board/Column";
 import AddColumn from "@/components/Board/AddColumn";
-import { type Board } from "@/store/types";
+import useKanbanStore from "@/store/store";
 
-type BoardProps = ComponentPropsWithoutRef<"div"> & {
-  board: Board;
-};
+type BoardProps = ComponentPropsWithoutRef<"div">;
 
-const Board = ({ board, className, ...props }: BoardProps) => {
+const Board = ({ className, ...props }: BoardProps) => {
+  const selectedBoard = useKanbanStore((state) =>
+    state.boards.find((board) => board.id === state.selectedBoardId),
+  );
   return (
     <DndContext>
       <div
@@ -20,10 +21,18 @@ const Board = ({ board, className, ...props }: BoardProps) => {
         )}
         {...props}
       >
-        {board.columns.map((column) => (
-          <Column key={column.id} column={column} boardId={board.id} />
-        ))}
-        <AddColumn boardId={board.id} />
+        {selectedBoard && (
+          <>
+            {selectedBoard.columns.map((column) => (
+              <Column
+                key={column.id}
+                column={column}
+                boardId={selectedBoard.id}
+              />
+            ))}
+            <AddColumn />
+          </>
+        )}
       </div>
     </DndContext>
   );

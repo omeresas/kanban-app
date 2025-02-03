@@ -1,6 +1,6 @@
 import { produce } from "immer";
 import { UniqueIdentifier } from "@dnd-kit/core";
-import type { KanbanState, KanbanAction } from "@/store/store";
+import type { KanbanState, KanbanAction } from "@/store/types";
 import type { Board, Column, Task } from "@/store/types";
 
 export const kanbanReducer = (
@@ -11,6 +11,10 @@ export const kanbanReducer = (
     switch (action.type) {
       case "addBoard":
         addBoard(draft, action.payload.name);
+        break;
+
+      case "setSelectedBoard":
+        draft.selectedBoardId = action.payload.boardId;
         break;
 
       case "deleteBoard":
@@ -31,7 +35,6 @@ export const kanbanReducer = (
           action.payload.boardId,
           action.payload.columnId,
           action.payload.title,
-          action.payload.description,
         );
         break;
 
@@ -65,7 +68,7 @@ export const kanbanReducer = (
         break;
 
       default:
-        throw new Error(`Unknown action: ${action.type}`);
+        throw new Error(`Unknown action: ${action}`);
     }
   });
 };
@@ -81,6 +84,7 @@ function addBoard(draft: KanbanState, name: string) {
 
 function deleteBoard(draft: KanbanState, id: UniqueIdentifier) {
   draft.boards = draft.boards.filter((board) => board.id !== id);
+  draft.selectedBoardId = draft.boards.length > 0 ? draft.boards[0].id : null;
 }
 
 function addColumn(
@@ -111,15 +115,13 @@ function addTask(
   boardId: UniqueIdentifier,
   columnId: UniqueIdentifier,
   title: string,
-  description = "",
 ) {
   const board = draft.boards.find((b) => b.id === boardId);
   const column = board?.columns.find((c) => c.id === columnId);
   if (column) {
     const newTask: Task = {
-      id: getNextTaskId(board),
+      id: getNextTaskId(draft, boardId),
       title,
-      description,
       status: column.name,
       statusId: column.id,
       subtasks: [],
@@ -189,8 +191,14 @@ function getNextColumnId(board: Board): UniqueIdentifier {
   return Math.max(...board.columns.map((column) => toNumber(column.id))) + 1;
 }
 
-function getNextTaskId(board: Board): UniqueIdentifier {
-  const allTasks = board.columns.flatMap((column) => column.tasks);
+function getNextTaskId(
+  draft: KanbanState,
+  boardId: UniqueIdentifier,
+): UniqueIdentifier {
+  const allTasks =
+    draft.boards
+      .find((b) => b.id === boardId)
+      ?.columns.flatMap((column) => column.tasks) ?? [];
   if (allTasks.length === 0) return 0;
   return Math.max(...allTasks.map((task) => toNumber(task.id))) + 1;
 }

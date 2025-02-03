@@ -44,7 +44,7 @@ const AddBoard = () => {
   return (
     <Dialog open={open} onOpenChange={handleOnOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="add_board">
+        <Button variant="add_board" size="auto">
           <Plus strokeWidth={3} className="pt-[1px]" /> Add Board
         </Button>
       </DialogTrigger>

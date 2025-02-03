@@ -1,4 +1,3 @@
-import * as React from "react";
 import { UniqueIdentifier } from "@dnd-kit/core";
 import { ComponentPropsWithRef, forwardRef } from "react";
 import { cn } from "@/lib/utils";
@@ -6,8 +5,9 @@ import { memoize } from "proxy-memoize";
 import { Table2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import useKanbanStore, { type KanbanState } from "@/store/store";
+import useKanbanStore from "@/store/store";
 import AddBoard from "@/components/Sidebar/AddBoard";
+import { KanbanState } from "@/store/types";
 
 const useBoardNamesIds = memoize<
   KanbanState,
@@ -19,15 +19,13 @@ const useBoardNamesIds = memoize<
   })),
 );
 
-type SidebarProps = ComponentPropsWithRef<"aside"> & {
-  selectedBoardId: UniqueIdentifier | null;
-  setSelectedBoardId: (id: UniqueIdentifier) => void;
-};
+type SidebarProps = ComponentPropsWithRef<"aside">;
 
 const Sidebar = forwardRef<HTMLElement, SidebarProps>(
-  ({ selectedBoardId, setSelectedBoardId, className, ...props }, ref) => {
+  ({ className, ...props }, ref) => {
     const boardNamesIds = useKanbanStore(useBoardNamesIds);
-
+    const selectedBoardId = useKanbanStore((state) => state.selectedBoardId);
+    const dispatch = useKanbanStore((state) => state.dispatch);
     return (
       <aside
         ref={ref}
@@ -44,7 +42,12 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
           {boardNamesIds.map((board) => (
             <li key={board.id}>
               <Button
-                onClick={() => setSelectedBoardId(board.id)}
+                onClick={() =>
+                  dispatch({
+                    type: "setSelectedBoard",
+                    payload: { boardId: board.id },
+                  })
+                }
                 variant={
                   board.id === selectedBoardId
                     ? "sidebar_selected"

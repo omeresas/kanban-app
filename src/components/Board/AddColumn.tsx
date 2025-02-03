@@ -1,16 +1,12 @@
 import { useRef, useState } from "react";
-import { UniqueIdentifier } from "@dnd-kit/core";
 import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useKanbanStore from "@/store/store";
 import { useOnClickOutside } from "usehooks-ts"; // Import the hook from usehooks-ts
 
-type AddColumnProps = {
-  boardId: UniqueIdentifier;
-};
-
-const AddColumn = ({ boardId }: AddColumnProps) => {
+const AddColumn = () => {
+  const selectedBoardId = useKanbanStore((state) => state.selectedBoardId)!;
   const dispatch = useKanbanStore((state) => state.dispatch);
   const [isEditing, setIsEditing] = useState(false);
   const [columnName, setColumnName] = useState("");
@@ -18,7 +14,10 @@ const AddColumn = ({ boardId }: AddColumnProps) => {
 
   const handleAddColumn = () => {
     if (!columnName.trim()) return;
-    dispatch({ type: "addColumn", payload: { boardId, name: columnName } });
+    dispatch({
+      type: "addColumn",
+      payload: { boardId: selectedBoardId, name: columnName },
+    });
     setColumnName("");
     setIsEditing(false);
   };
