@@ -1,31 +1,29 @@
 import { ComponentPropsWithRef } from "react";
 import { cn } from "@/lib/utils";
 
-import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "../theme/ThemeToggle";
+import BoardOptions from "./BoardOptions";
+import type { Board } from "@/store/types";
 
 type HeaderProps = ComponentPropsWithRef<"div"> & {
-  boardTitle?: string;
+  selectedBoard?: Board;
 };
 
-const Header = ({
-  boardTitle = "Board Title",
-  className,
-  ...props
-}: HeaderProps) => {
+const Header = ({ selectedBoard, className, ...props }: HeaderProps) => {
   return (
     <div
       className={cn(
-        "bg-header-sidebar-background text-header-sidebar-foreground flex items-center justify-evenly",
+        "bg-header-sidebar-background text-header-sidebar-foreground flex items-center justify-start",
         className,
       )}
       {...props}
     >
-      <h1 className="text-2xl font-bold">{boardTitle}</h1>
-      <div className="flex gap-2">
-        <Button>Button 1</Button>
-        <Button>Button 2</Button>
-        <ThemeToggle />
+      <div className="flex w-[calc(100vw-255px)] items-center justify-between">
+        <h1 className="ml-10 text-2xl font-bold">{selectedBoard?.name}</h1>
+        <div className="mr-10 flex gap-2">
+          {selectedBoard && <BoardOptions boardId={selectedBoard.id} />}
+          <ThemeToggle />
+        </div>
       </div>
     </div>
   );

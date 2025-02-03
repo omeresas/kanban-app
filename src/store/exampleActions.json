@@ -9,7 +9,7 @@
       }
     },
     {
-      "type": "removeBoard",
+      "type": "deleteBoard",
       "payload": 1
     },
     {
@@ -24,7 +24,7 @@
       }
     },
     {
-      "type": "removeColumn",
+      "type": "deleteColumn",
       "payload": {
         "boardId": 0,
         "columnId": 1
@@ -58,7 +58,7 @@
       }
     },
     {
-      "type": "removeTask",
+      "type": "deleteTask",
       "payload": {
         "boardId": 0,
         "columnId": 1,

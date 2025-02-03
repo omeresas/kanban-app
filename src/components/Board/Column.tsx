@@ -24,14 +24,16 @@ const Column = ({ column, boardId, className, ...props }: ColumnProps) => {
       {...props}
     >
       <h2 className="text-lg font-bold">{column.name}</h2>
-      {column.tasks.length > 0 && (
-        <div className="flex flex-col gap-2">
-          {column.tasks.map((task) => (
-            <Task key={task.id} task={task} />
-          ))}
-          <AddTask boardId={boardId} columnId={column.id} />
-        </div>
-      )}
+      <div className="flex flex-col gap-2">
+        {column.tasks.length > 0 && (
+          <>
+            {column.tasks.map((task) => (
+              <Task key={task.id} task={task} />
+            ))}
+          </>
+        )}
+        <AddTask boardId={boardId} columnId={column.id} />
+      </div>
     </div>
   );
 };

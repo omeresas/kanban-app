@@ -19,7 +19,10 @@ function App() {
     <ThemeProvider>
       <div className="bg-app-border grid h-screen grid-cols-[auto_1fr] grid-rows-[auto_1fr] gap-0.25">
         <Logo className="col-start-1 row-start-1" />
-        <Header className="col-start-2 row-start-1" />
+        <Header
+          selectedBoard={selectedBoard}
+          className="col-start-2 row-start-1"
+        />
         <Sidebar
           className="col-start-1 row-start-2"
           selectedBoardId={selectedBoardId}

@@ -4,7 +4,7 @@ import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useKanbanStore from "@/store/store";
-import { useOnClickOutside } from "usehooks-ts"; // Import the hook
+import { useOnClickOutside } from "usehooks-ts";
 
 type AddTaskProps = {
   boardId: UniqueIdentifier;
@@ -43,7 +43,6 @@ const AddTask = ({ boardId, columnId }: AddTaskProps) => {
     }
   };
 
-  // When editing, clicking outside the container will cancel editing.
   useOnClickOutside(containerRef, () => {
     if (isEditing) {
       handleCancel();
@@ -52,7 +51,7 @@ const AddTask = ({ boardId, columnId }: AddTaskProps) => {
 
   if (!isEditing) {
     return (
-      <Button onClick={() => setIsEditing(true)} variant="add_task">
+      <Button onClick={() => setIsEditing(true)} variant="add_task" size="auto">
         <Plus strokeWidth={3} className="pt-[1px]" /> Add Task
       </Button>
     );
@@ -61,7 +60,7 @@ const AddTask = ({ boardId, columnId }: AddTaskProps) => {
   return (
     <div
       ref={containerRef}
-      className="bg-task-background flex flex-col gap-2 rounded-md p-3 shadow-md"
+      className="bg-task-background text-task-foreground flex flex-col gap-2 rounded-md p-3 shadow-md"
     >
       <Input
         placeholder="Enter task name"

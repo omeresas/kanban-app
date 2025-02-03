@@ -13,16 +13,16 @@ export const kanbanReducer = (
         addBoard(draft, action.payload.name);
         break;
 
-      case "removeBoard":
-        removeBoard(draft, action.payload);
+      case "deleteBoard":
+        deleteBoard(draft, action.payload.boardId);
         break;
 
       case "addColumn":
         addColumn(draft, action.payload.boardId, action.payload.name);
         break;
 
-      case "removeColumn":
-        removeColumn(draft, action.payload.boardId, action.payload.columnId);
+      case "deleteColumn":
+        deleteColumn(draft, action.payload.boardId, action.payload.columnId);
         break;
 
       case "addTask":
@@ -35,8 +35,8 @@ export const kanbanReducer = (
         );
         break;
 
-      case "removeTask":
-        removeTask(
+      case "deleteTask":
+        deleteTask(
           draft,
           action.payload.boardId,
           action.payload.columnId,
@@ -79,7 +79,7 @@ function addBoard(draft: KanbanState, name: string) {
   draft.boards.push(newBoard);
 }
 
-function removeBoard(draft: KanbanState, id: UniqueIdentifier) {
+function deleteBoard(draft: KanbanState, id: UniqueIdentifier) {
   draft.boards = draft.boards.filter((board) => board.id !== id);
 }
 
@@ -95,7 +95,7 @@ function addColumn(
   }
 }
 
-function removeColumn(
+function deleteColumn(
   draft: KanbanState,
   boardId: UniqueIdentifier,
   columnId: UniqueIdentifier,
@@ -128,7 +128,7 @@ function addTask(
   }
 }
 
-function removeTask(
+function deleteTask(
   draft: KanbanState,
   boardId: UniqueIdentifier,
   columnId: UniqueIdentifier,

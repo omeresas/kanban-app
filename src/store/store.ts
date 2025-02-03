@@ -16,9 +16,9 @@ export type KanbanAction =
       payload: { name: string };
     }
   | {
-      type: "removeBoard";
+      type: "deleteBoard";
       payload: {
-        id: UniqueIdentifier;
+        boardId: UniqueIdentifier;
       };
     }
   | {
@@ -26,7 +26,7 @@ export type KanbanAction =
       payload: { boardId: UniqueIdentifier; name: string };
     }
   | {
-      type: "removeColumn";
+      type: "deleteColumn";
       payload: { boardId: UniqueIdentifier; columnId: UniqueIdentifier };
     }
   | {
@@ -47,7 +47,7 @@ export type KanbanAction =
       };
     }
   | {
-      type: "removeTask";
+      type: "deleteTask";
       payload: {
         boardId: UniqueIdentifier;
         columnId: UniqueIdentifier;
