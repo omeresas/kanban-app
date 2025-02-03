@@ -4,41 +4,46 @@ import { Plus, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import useKanbanStore from "@/store/store";
-import { useOnClickOutside } from "usehooks-ts"; // Import the hook from usehooks-ts
+import { useOnClickOutside } from "usehooks-ts"; // Import the hook
 
-type AddColumnProps = {
+type AddTaskProps = {
   boardId: UniqueIdentifier;
+  columnId: UniqueIdentifier;
 };
 
-const AddColumn = ({ boardId }: AddColumnProps) => {
+const AddTask = ({ boardId, columnId }: AddTaskProps) => {
   const dispatch = useKanbanStore((state) => state.dispatch);
   const [isEditing, setIsEditing] = useState(false);
-  const [columnName, setColumnName] = useState("");
+  const [taskName, setTaskName] = useState("");
+
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const handleAddColumn = () => {
-    if (!columnName.trim()) return;
-    dispatch({ type: "addColumn", payload: { boardId, name: columnName } });
-    setColumnName("");
+  const handleAddTask = () => {
+    if (!taskName.trim()) return;
+    dispatch({
+      type: "addTask",
+      payload: { boardId, columnId, title: taskName },
+    });
+    setTaskName("");
     setIsEditing(false);
   };
 
   const handleCancel = () => {
-    setColumnName("");
+    setTaskName("");
     setIsEditing(false);
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       event.preventDefault();
-      handleAddColumn();
+      handleAddTask();
     } else if (event.key === "Escape") {
       event.preventDefault();
       handleCancel();
     }
   };
 
-  // Use the hook to detect clicks outside the container.
+  // When editing, clicking outside the container will cancel editing.
   useOnClickOutside(containerRef, () => {
     if (isEditing) {
       handleCancel();
@@ -47,8 +52,8 @@ const AddColumn = ({ boardId }: AddColumnProps) => {
 
   if (!isEditing) {
     return (
-      <Button onClick={() => setIsEditing(true)} variant="add_column">
-        <Plus strokeWidth={3} className="pt-[1px]" /> Add Column
+      <Button onClick={() => setIsEditing(true)} variant="add_task">
+        <Plus strokeWidth={3} className="pt-[1px]" /> Add Task
       </Button>
     );
   }
@@ -56,18 +61,18 @@ const AddColumn = ({ boardId }: AddColumnProps) => {
   return (
     <div
       ref={containerRef}
-      className="bg-column-background flex flex-col gap-2 rounded-md p-4 shadow-md"
+      className="bg-task-background flex flex-col gap-2 rounded-md p-3 shadow-md"
     >
       <Input
-        placeholder="Enter column name"
-        value={columnName}
-        onChange={(e) => setColumnName(e.target.value)}
+        placeholder="Enter task name"
+        value={taskName}
+        onChange={(e) => setTaskName(e.target.value)}
         onKeyDown={handleKeyDown}
         autoFocus
       />
       <div className="flex justify-start gap-2">
-        <Button onClick={handleAddColumn}>Add Column</Button>
-        <Button onClick={handleCancel} variant="add_column_cancel">
+        <Button onClick={handleAddTask}>Add Task</Button>
+        <Button onClick={handleCancel} variant="add_task_cancel">
           <X strokeWidth={3} />
         </Button>
       </div>
@@ -75,4 +80,4 @@ const AddColumn = ({ boardId }: AddColumnProps) => {
   );
 };
 
-export default AddColumn;
+export default AddTask;

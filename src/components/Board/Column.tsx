@@ -1,15 +1,17 @@
 import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
-import { useDroppable } from "@dnd-kit/core";
+import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
 
-import TaskCard from "./Task";
+import Task from "@/components/Board/Task";
+import AddTask from "@/components/Board/AddTask";
 import type { Column } from "@/store/types";
 
 type ColumnProps = ComponentPropsWithoutRef<"div"> & {
   column: Column;
+  boardId: UniqueIdentifier;
 };
 
-const Column = ({ column, className, ...props }: ColumnProps) => {
+const Column = ({ column, boardId, className, ...props }: ColumnProps) => {
   const { setNodeRef } = useDroppable({ id: `column-${column.id}` });
 
   return (
@@ -25,8 +27,9 @@ const Column = ({ column, className, ...props }: ColumnProps) => {
       {column.tasks.length > 0 && (
         <div className="flex flex-col gap-2">
           {column.tasks.map((task) => (
-            <TaskCard key={task.id} task={task} />
+            <Task key={task.id} task={task} />
           ))}
+          <AddTask boardId={boardId} columnId={column.id} />
         </div>
       )}
     </div>

@@ -18,8 +18,11 @@ const buttonVariants = cva(
         add_column:
           "bg-column-background text-column-foreground hover:bg-column-background/90",
         add_column_cancel:
-          "bg-add_column_cancel_background text-add_column_cancel_foreground hover:bg-add_column_cancel_background/90",
-
+          "bg-add-column-cancel-background text-add-column-cancel-foreground hover:bg-add-column-cancel-background/90",
+        add_task:
+          "bg-task-background text-task-foreground hover:bg-task-background/90 justify-start shadow-md",
+        add_task_cancel:
+          "bg-add-task-cancel-background text-add-task-cancel-foreground hover:bg-add-task-cancel-background/90",
         default:
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
         destructive:

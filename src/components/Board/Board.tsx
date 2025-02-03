@@ -21,7 +21,7 @@ const Board = ({ board, className, ...props }: BoardProps) => {
         {...props}
       >
         {board.columns.map((column) => (
-          <Column key={column.id} column={column} />
+          <Column key={column.id} column={column} boardId={board.id} />
         ))}
         <AddColumn boardId={board.id} />
       </div>
