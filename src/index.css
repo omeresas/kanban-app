@@ -57,6 +57,23 @@
 
   --color-header-sidebar-background: var(--header-sidebar-background);
   --color-header-sidebar-foreground: var(--header-sidebar-foreground);
+
+  --color-selected-board-button-background: var(
+    --selected-board-button-background
+  );
+  --color-selected-board-button-foreground: var(
+    --selected-board-button-foreground
+  );
+
+  --color-not-selected-board-button-background: var(
+    --not-selected-board-button-background
+  );
+  --color-not-selected-board-button-foreground: var(
+    --not-selected-board-button-foreground
+  );
+
+  --color-add-board-button-background: var(--add-board-button-background);
+  --color-add-board-button-foreground: var(--add-board-button-foreground);
 }
 
 @layer base {
@@ -97,7 +114,7 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-    --app-border: var(--color-gray-200);
+    --app-border: var(--color-gray-300);
 
     --board-gradient-start: var(--color-rose-200);
     --board-gradient-middle: var(--color-purple-200);
@@ -111,6 +128,15 @@
 
     --header-sidebar-background: var(--color-white);
     --header-sidebar-foreground: var(--color-gray-900);
+
+    --selected-board-button-background: var(--color-indigo-500);
+    --selected-board-button-foreground: var(--color-slate-200);
+
+    --not-selected-board-button-background: var(--color-white);
+    --not-selected-board-button-foreground: var(--color-slate-600);
+
+    --add-board-button-background: var(--color-white);
+    --add-board-button-foreground: var(--color-slate-400);
   }
 
   .dark {
@@ -139,7 +165,7 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
 
-    --app-border: var(--color-gray-200);
+    --app-border: var(--color-gray-600);
 
     --board-gradient-start: var(--color-fuchsia-950);
     --board-gradient-middle: var(--color-violet-950);
@@ -153,6 +179,15 @@
 
     --header-sidebar-background: var(--color-slate-900);
     --header-sidebar-foreground: var(--color-white);
+
+    --selected-board-button-background: var(--color-indigo-500);
+    --selected-board-button-foreground: var(--color-slate-200);
+
+    --not-selected-board-button-background: var(--color-slate-900);
+    --not-selected-board-button-foreground: var(--color-slate-400);
+
+    --add-board-button-background: var(--color-slate-900);
+    --add-board-button-foreground: var(--color-slate-500);
   }
 }
 

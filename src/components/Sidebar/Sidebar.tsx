@@ -17,7 +17,7 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { Input } from "../ui/input";
-import { Table2 } from "lucide-react";
+import { Plus, Table2 } from "lucide-react";
 
 const useBoardNamesIds = memoize<
   KanbanState,
@@ -67,12 +67,14 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
       <aside
         ref={ref}
         className={cn(
-          "bg-header-sidebar-background text-header-sidebar-foreground flex flex-col items-start gap-4 pr-2",
+          "bg-header-sidebar-background text-header-sidebar-foreground flex flex-col items-start pr-2",
           className,
         )}
         {...props}
       >
-        <h1 className="p-4 text-lg font-semibold">Boards</h1>
+        <h1 className="p-4 pl-6 text-base font-medium tracking-wider text-gray-400">
+          All Boards
+        </h1>
         <ul className="w-full">
           {boardNamesIds.map((board) => (
             <li key={board.id}>
@@ -90,38 +92,40 @@ const Sidebar = forwardRef<HTMLElement, SidebarProps>(
               </Button>
             </li>
           ))}
+          <Dialog open={open} onOpenChange={handleOnOpenChange}>
+            <DialogTrigger asChild>
+              <Button className="bg-add-board-button-background text-add-board-button-foreground hover:bg-accent my-2 w-full justify-start rounded-l-none rounded-r-full p-2 pl-6 text-left text-base font-medium shadow-sm [&_svg]:size-4.5">
+                <Plus strokeWidth={2.2} className="pt-[1px]" /> Add Board
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Add New Board</DialogTitle>
+                <DialogDescription>
+                  Enter a name for the new board.
+                </DialogDescription>
+              </DialogHeader>
+              <Input
+                type="text"
+                placeholder="Board Name"
+                value={newBoardName}
+                onKeyDown={handleKeyDown}
+                onChange={(e) => setNewBoardName(e.target.value)}
+                className="w-full rounded-md border p-2"
+              />
+              <DialogFooter>
+                <DialogClose asChild>
+                  <Button variant="secondary">Cancel</Button>
+                </DialogClose>
+                <DialogClose asChild>
+                  <Button onClick={handleAddBoard}>Create Board</Button>
+                </DialogClose>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
         </ul>
 
         {/* Dialog for Adding a Board */}
-        <Dialog open={open} onOpenChange={handleOnOpenChange}>
-          <DialogTrigger asChild>
-            <Button className="mt-4 w-full">+ Add Board</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Add New Board</DialogTitle>
-              <DialogDescription>
-                Enter a name for the new board.
-              </DialogDescription>
-            </DialogHeader>
-            <Input
-              type="text"
-              placeholder="Board Name"
-              value={newBoardName}
-              onKeyDown={handleKeyDown}
-              onChange={(e) => setNewBoardName(e.target.value)}
-              className="w-full rounded-md border p-2"
-            />
-            <DialogFooter>
-              <DialogClose asChild>
-                <Button variant="secondary">Cancel</Button>
-              </DialogClose>
-              <DialogClose asChild>
-                <Button onClick={handleAddBoard}>Create Board</Button>
-              </DialogClose>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
       </aside>
     );
   },
