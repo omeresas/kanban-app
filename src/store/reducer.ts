@@ -136,9 +136,8 @@ function deleteTask(
   columnId: UniqueIdentifier,
   taskId: UniqueIdentifier,
 ) {
-  const column = draft.boards
-    .find((b) => b.id === boardId)
-    ?.columns.find((c) => c.id === columnId);
+  const board = draft.boards.find((b) => b.id === boardId);
+  const column = board?.columns.find((c) => c.id === columnId);
   if (column) {
     column.tasks = column.tasks.filter((task) => task.id !== taskId);
   }
@@ -151,10 +150,10 @@ function updateTask(
   taskId: UniqueIdentifier,
   updatedTask: Partial<Task>,
 ) {
-  const task = draft.boards
-    .find((b) => b.id === boardId)
-    ?.columns.find((c) => c.id === columnId)
-    ?.tasks.find((t) => t.id === taskId);
+  const board = draft.boards.find((b) => b.id === boardId);
+  const column = board?.columns.find((c) => c.id === columnId);
+  const task = column?.tasks.find((t) => t.id === taskId);
+
   if (task) {
     Object.assign(task, updatedTask);
   }
@@ -167,10 +166,10 @@ function toggleSubtask(
   taskId: UniqueIdentifier,
   subtaskIndex: number,
 ) {
-  const subtask = draft.boards
-    .find((b) => b.id === boardId)
-    ?.columns.find((c) => c.id === columnId)
-    ?.tasks.find((t) => t.id === taskId)?.subtasks[subtaskIndex];
+  const board = draft.boards.find((b) => b.id === boardId);
+  const column = board?.columns.find((c) => c.id === columnId);
+  const task = column?.tasks.find((t) => t.id === taskId);
+  const subtask = task?.subtasks?.[subtaskIndex];
   if (subtask) {
     subtask.isCompleted = !subtask.isCompleted;
   }

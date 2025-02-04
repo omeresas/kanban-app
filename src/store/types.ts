@@ -48,6 +48,7 @@ export type KanbanAction =
       payload: { boardId: UniqueIdentifier; name: string };
     }
   | {
+      //TODO: delete column to board
       type: "deleteColumn";
       payload: { boardId: UniqueIdentifier; columnId: UniqueIdentifier };
     }
@@ -60,6 +61,7 @@ export type KanbanAction =
       };
     }
   | {
+      //TODO: update task
       type: "updateTask";
       payload: {
         boardId: UniqueIdentifier;
@@ -69,6 +71,7 @@ export type KanbanAction =
       };
     }
   | {
+      //TODO: Delete task
       type: "deleteTask";
       payload: {
         boardId: UniqueIdentifier;
@@ -77,6 +80,7 @@ export type KanbanAction =
       };
     }
   | {
+      //TODO: Toggle subtask
       type: "toggleSubtask";
       payload: {
         boardId: UniqueIdentifier;

@@ -5,6 +5,7 @@ import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
 import Task from "@/components/Board/Task";
 import AddTask from "@/components/Board/AddTask";
 import type { Column } from "@/store/types";
+import ColumnOptions from "@/components/Board/ColumnOptions";
 
 type ColumnProps = ComponentPropsWithoutRef<"div"> & {
   column: Column;
@@ -23,7 +24,10 @@ const Column = ({ column, boardId, className, ...props }: ColumnProps) => {
       )}
       {...props}
     >
-      <h2 className="text-lg font-bold">{column.name}</h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-bold">{column.name}</h2>
+        <ColumnOptions boardId={boardId} columnId={column.id} />
+      </div>
       <div className="flex flex-col gap-2">
         {column.tasks.length > 0 && (
           <>

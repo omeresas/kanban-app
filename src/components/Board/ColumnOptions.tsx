@@ -22,23 +22,23 @@ import {
 import useKanbanStore from "@/store/store";
 import { UniqueIdentifier } from "@dnd-kit/core";
 
-type BoardOptionsProps = {
+type ColumnOptionsProps = {
   boardId: UniqueIdentifier;
+  columnId: UniqueIdentifier;
 };
 
-const BoardOptions = ({ boardId }: BoardOptionsProps) => {
+const ColumnOptions = ({ boardId, columnId }: ColumnOptionsProps) => {
   const dispatch = useKanbanStore((state) => state.dispatch);
 
-  const handleDeleteBoard = () => {
+  const handleDeleteColumn = () => {
     dispatch({
-      type: "deleteBoard",
-      payload: { boardId },
+      type: "deleteColumn",
+      payload: { boardId, columnId },
     });
   };
 
   return (
     <AlertDialog>
-      {/* The dropdown menu is nested inside the AlertDialog.Root */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="icon">
@@ -47,29 +47,27 @@ const BoardOptions = ({ boardId }: BoardOptionsProps) => {
         </DropdownMenuTrigger>
         <DropdownMenuPortal>
           <DropdownMenuContent>
-            {/* Wrap the DropdownMenuItem in an AlertDialogTrigger */}
             <AlertDialogTrigger asChild>
               <DropdownMenuItem>
-                Delete Board
+                Delete Column
                 <Trash2 className="h-4 w-4" color="red" />
               </DropdownMenuItem>
             </AlertDialogTrigger>
           </DropdownMenuContent>
         </DropdownMenuPortal>
       </DropdownMenu>
-      {/* The AlertDialog content is rendered via a portal */}
       <AlertDialogPortal>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the
-              board and all of its columns and tasks.
+              column and all of its tasks.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteBoard}>
+            <AlertDialogAction onClick={handleDeleteColumn}>
               Delete
             </AlertDialogAction>
           </AlertDialogFooter>
@@ -79,4 +77,6 @@ const BoardOptions = ({ boardId }: BoardOptionsProps) => {
   );
 };
 
-export default BoardOptions;
+ColumnOptions.displayName = "ColumnOptions";
+
+export default ColumnOptions;
