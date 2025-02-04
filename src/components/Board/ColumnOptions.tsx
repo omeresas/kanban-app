@@ -41,7 +41,11 @@ const ColumnOptions = ({ boardId, columnId }: ColumnOptionsProps) => {
     <AlertDialog>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="hover:bg-add-task-cancel-background"
+          >
             <MoreHorizontal className="h-5 w-5" />
           </Button>
         </DropdownMenuTrigger>

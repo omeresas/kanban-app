@@ -48,7 +48,6 @@ export type KanbanAction =
       payload: { boardId: UniqueIdentifier; name: string };
     }
   | {
-      //TODO: delete column to board
       type: "deleteColumn";
       payload: { boardId: UniqueIdentifier; columnId: UniqueIdentifier };
     }

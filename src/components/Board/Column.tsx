@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
 
-import Task from "@/components/Board/Task";
+import TaskWithDialog from "@/components/Board/TaskWithDialog";
 import AddTask from "@/components/Board/AddTask";
 import type { Column } from "@/store/types";
 import ColumnOptions from "@/components/Board/ColumnOptions";
@@ -32,7 +32,7 @@ const Column = ({ column, boardId, className, ...props }: ColumnProps) => {
         {column.tasks.length > 0 && (
           <>
             {column.tasks.map((task) => (
-              <Task key={task.id} task={task} />
+              <TaskWithDialog key={task.id} task={task} />
             ))}
           </>
         )}
