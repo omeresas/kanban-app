@@ -62,7 +62,7 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
-        <div className="flex flex-col items-stretch justify-start gap-4 py-4">
+        <div className="flex flex-col items-stretch justify-start gap-2">
           {/* Title field */}
           {isEditingTitle ? (
             <Input
@@ -70,14 +70,20 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setTitle(e.target.value)
               }
-              onBlur={() => setIsEditingTitle(false)}
+              onBlur={() => {
+                if (!title.trim()) {
+                  // Reset to original title if empty
+                  setTitle(task.title);
+                }
+                setIsEditingTitle(false);
+              }}
               autoFocus
               variant="edit_task_title"
             />
           ) : (
             <div
               onClick={() => setIsEditingTitle(true)}
-              className="text-task-foreground hover:bg-accent/50 cursor-text self-start px-2 py-1 text-lg font-semibold"
+              className="text-task-foreground hover:bg-accent/80 cursor-text self-start rounded-sm px-3 py-2 text-lg font-semibold"
             >
               {title}
             </div>
@@ -93,15 +99,16 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
                 }
                 onBlur={() => setIsEditingDescription(false)}
                 autoFocus
-                placeholder="Task description"
+                placeholder="Add description..."
                 rows={5}
+                className="rounded-sm border p-2 px-2 py-1 text-sm font-light"
               />
             ) : (
               <div
                 onClick={() => setIsEditingDescription(true)}
-                className="cursor-pointer rounded border p-2"
+                className="text-task-foreground hover:bg-accent/80 cursor-text self-start rounded-sm px-3 py-2 text-sm font-light"
               >
-                {description || "Add description"}
+                {description || "Add description..."}
               </div>
             )}
           </div>

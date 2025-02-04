@@ -11,7 +11,7 @@ const inputVariants = cva(
         default:
           "file:text-foreground placeholder:text-muted-foreground text-base file:border-0 file:bg-transparent file:text-sm file:font-medium md:text-sm",
         edit_task_title:
-          "text-task-foreground bg-accent/50 self-start rounded-sm border-none p-2 text-lg font-semibold shadow-none ring-0 px-2",
+          "text-task-foreground bg-accent/80 self-start rounded-sm border-none text-lg font-semibold shadow-none px-3 py-2 h-auto",
       },
     },
     defaultVariants: {
