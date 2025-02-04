@@ -64,7 +64,6 @@ export type KanbanAction =
       type: "updateTask";
       payload: {
         boardId: UniqueIdentifier;
-        columnId: UniqueIdentifier;
         taskId: UniqueIdentifier;
         updatedTask: Partial<Task>;
       };
@@ -76,15 +75,5 @@ export type KanbanAction =
         boardId: UniqueIdentifier;
         columnId: UniqueIdentifier;
         taskId: UniqueIdentifier;
-      };
-    }
-  | {
-      //TODO: Toggle subtask
-      type: "toggleSubtask";
-      payload: {
-        boardId: UniqueIdentifier;
-        columnId: UniqueIdentifier;
-        taskId: UniqueIdentifier;
-        subtaskIndex: number;
       };
     };

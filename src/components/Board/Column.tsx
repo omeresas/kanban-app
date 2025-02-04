@@ -2,7 +2,7 @@ import { ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
 import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
 
-import TaskWithDialog from "@/components/Board/TaskWithDialog";
+import TaskCard from "@/components/Board/TaskCard";
 import AddTask from "@/components/Board/AddTask";
 import type { Column } from "@/store/types";
 import ColumnOptions from "@/components/Board/ColumnOptions";
@@ -29,13 +29,8 @@ const Column = ({ column, boardId, className, ...props }: ColumnProps) => {
         <ColumnOptions boardId={boardId} columnId={column.id} />
       </div>
       <div className="flex flex-col gap-2">
-        {column.tasks.length > 0 && (
-          <>
-            {column.tasks.map((task) => (
-              <TaskWithDialog key={task.id} task={task} />
-            ))}
-          </>
-        )}
+        {column.tasks.length > 0 &&
+          column.tasks.map((task) => <TaskCard key={task.id} task={task} />)}
         <AddTask boardId={boardId} columnId={column.id} />
       </div>
     </div>

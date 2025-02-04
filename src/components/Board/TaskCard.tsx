@@ -10,7 +10,7 @@ type TaskProps = ComponentPropsWithoutRef<"div"> & {
   task: Task;
 };
 
-const TaskCard = ({ task, className, ...props }: TaskProps) => {
+const TaskItem = ({ task, className, ...props }: TaskProps) => {
   // const { attributes, listeners, setNodeRef, transform } = useDraggable({
   //   id: `task-${task.id}`,
   // });
@@ -36,12 +36,12 @@ const TaskCard = ({ task, className, ...props }: TaskProps) => {
   );
 };
 
-const TaskWithDialog = (props: TaskProps) => {
+const TaskCard = (props: TaskProps) => {
   return (
     <TaskDialog task={props.task}>
-      <TaskCard {...props} />
+      <TaskItem {...props} />
     </TaskDialog>
   );
 };
 
-export default TaskWithDialog;
+export default TaskCard;

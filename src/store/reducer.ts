@@ -51,19 +51,8 @@ export const kanbanReducer = (
         updateTask(
           draft,
           action.payload.boardId,
-          action.payload.columnId,
           action.payload.taskId,
           action.payload.updatedTask,
-        );
-        break;
-
-      case "toggleSubtask":
-        toggleSubtask(
-          draft,
-          action.payload.boardId,
-          action.payload.columnId,
-          action.payload.taskId,
-          action.payload.subtaskIndex,
         );
         break;
 
@@ -146,32 +135,12 @@ function deleteTask(
 function updateTask(
   draft: KanbanState,
   boardId: UniqueIdentifier,
-  columnId: UniqueIdentifier,
   taskId: UniqueIdentifier,
   updatedTask: Partial<Task>,
 ) {
-  const board = draft.boards.find((b) => b.id === boardId);
-  const column = board?.columns.find((c) => c.id === columnId);
-  const task = column?.tasks.find((t) => t.id === taskId);
-
+  const task = getTaskWithinBoard(draft, boardId, taskId);
   if (task) {
     Object.assign(task, updatedTask);
-  }
-}
-
-function toggleSubtask(
-  draft: KanbanState,
-  boardId: UniqueIdentifier,
-  columnId: UniqueIdentifier,
-  taskId: UniqueIdentifier,
-  subtaskIndex: number,
-) {
-  const board = draft.boards.find((b) => b.id === boardId);
-  const column = board?.columns.find((c) => c.id === columnId);
-  const task = column?.tasks.find((t) => t.id === taskId);
-  const subtask = task?.subtasks?.[subtaskIndex];
-  if (subtask) {
-    subtask.isCompleted = !subtask.isCompleted;
   }
 }
 
@@ -200,4 +169,15 @@ function getNextTaskId(
       ?.columns.flatMap((column) => column.tasks) ?? [];
   if (allTasks.length === 0) return 0;
   return Math.max(...allTasks.map((task) => toNumber(task.id))) + 1;
+}
+
+function getTaskWithinBoard(
+  draft: KanbanState,
+  boardId: UniqueIdentifier,
+  taskId: UniqueIdentifier,
+) {
+  return draft.boards
+    .find((b) => b.id === boardId)
+    ?.columns.flatMap((c) => c.tasks)
+    .find((t) => t.id === taskId);
 }
