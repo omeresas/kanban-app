@@ -1,3 +1,4 @@
+// TaskDialog.tsx
 import { useState } from "react";
 import {
   Dialog,
@@ -23,12 +24,24 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
   const [description, setDescription] = useState(task.description || "");
   const [subtasks, setSubtasks] = useState<Subtask[]>(task.subtasks || []);
 
-  // New state flags for editing modes
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
 
+  // Track the index of the subtask currently in edit mode (only one at a time)
+  const [editingSubtaskIndex, setEditingSubtaskIndex] = useState<number | null>(
+    null,
+  );
+
   const handleAddSubtask = () => {
-    setSubtasks([...subtasks, { title: "", isCompleted: false }]);
+    setSubtasks((prevSubtasks) => {
+      const newIndex = prevSubtasks.length;
+      const updatedSubtasks = [
+        ...prevSubtasks,
+        { title: "", isCompleted: false },
+      ];
+      setEditingSubtaskIndex(newIndex);
+      return updatedSubtasks;
+    });
   };
 
   const handleSubtaskChange = (index: number, value: string) => {
@@ -46,6 +59,9 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
   const handleDeleteSubtask = (index: number) => {
     const updated = subtasks.filter((_, i) => i !== index);
     setSubtasks(updated);
+    if (editingSubtaskIndex === index) {
+      setEditingSubtaskIndex(null);
+    }
   };
 
   const handleSave = () => {
@@ -61,24 +77,27 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="sm:max-w-[600px]">
-        <div className="flex flex-col items-stretch justify-start gap-2">
+      <DialogContent
+        onOpenAutoFocus={(e) => e.preventDefault()}
+        className="sm:max-w-[600px]"
+      >
+        <div className="flex flex-col items-stretch justify-start gap-4 py-3">
           {/* Title field */}
           {isEditingTitle ? (
-            <Input
+            <Textarea
               value={title}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
                 setTitle(e.target.value)
               }
               onBlur={() => {
                 if (!title.trim()) {
-                  // Reset to original title if empty
                   setTitle(task.title);
                 }
                 setIsEditingTitle(false);
               }}
               autoFocus
               variant="edit_task_title"
+              rows={1}
             />
           ) : (
             <div
@@ -90,47 +109,59 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
           )}
 
           {/* Description field */}
-          <div className="flex flex-col gap-2">
-            {isEditingDescription ? (
-              <Textarea
-                value={description}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                  setDescription(e.target.value)
-                }
-                onBlur={() => setIsEditingDescription(false)}
-                autoFocus
-                placeholder="Add description..."
-                rows={5}
-                className="rounded-sm border p-2 px-2 py-1 text-sm font-light"
-              />
-            ) : (
-              <div
-                onClick={() => setIsEditingDescription(true)}
-                className="text-task-foreground hover:bg-accent/80 cursor-text self-start rounded-sm px-3 py-2 text-sm font-light"
-              >
-                {description || "Add description..."}
-              </div>
-            )}
-          </div>
+          {isEditingDescription ? (
+            <Textarea
+              value={description}
+              onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setDescription(e.target.value)
+              }
+              onBlur={() => setIsEditingDescription(false)}
+              autoFocus
+              placeholder="Add description..."
+              rows={3}
+              variant="edit_task_description"
+            />
+          ) : (
+            <div
+              onClick={() => setIsEditingDescription(true)}
+              className="text-task-foreground hover:bg-accent/80 cursor-text rounded-sm px-3 py-2 text-sm font-light"
+            >
+              {description || "Add description..."}
+            </div>
+          )}
 
           {/* Subtasks field */}
-          <div className="flex flex-col gap-2">
+          <div className="px-3">
             <label className="text-sm font-medium">Subtasks</label>
             {subtasks.map((subtask, index) => (
-              <div key={index} className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={subtask.isCompleted}
-                  onChange={() => handleToggleSubtask(index)}
-                  className="h-4 w-4"
-                />
-                <Input
-                  value={subtask.title}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleSubtaskChange(index, e.target.value)
-                  }
-                  placeholder="Subtask title"
-                />
+              <div key={index} className="flex items-center justify-between">
+                <div className="flex grow items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={subtask.isCompleted}
+                    onChange={() => handleToggleSubtask(index)}
+                    className="h-4 w-4"
+                  />
+                  {editingSubtaskIndex === index ? (
+                    <Input
+                      value={subtask.title}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                        handleSubtaskChange(index, e.target.value)
+                      }
+                      onBlur={() => setEditingSubtaskIndex(null)}
+                      autoFocus
+                      placeholder="Subtask title"
+                      className="w-full"
+                    />
+                  ) : (
+                    <div
+                      onClick={() => setEditingSubtaskIndex(index)}
+                      className="text-task-foreground hover:bg-accent/80 cursor-text justify-self-start rounded-sm px-3 py-2 text-sm"
+                    >
+                      {subtask.title || "Edit subtask"}
+                    </div>
+                  )}
+                </div>
                 <Button
                   variant="ghost"
                   size="icon"
