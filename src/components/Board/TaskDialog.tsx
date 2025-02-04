@@ -102,7 +102,7 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
           ) : (
             <div
               onClick={() => setIsEditingTitle(true)}
-              className="text-task-foreground hover:bg-accent/80 cursor-text self-start rounded-sm px-3 py-2 text-lg font-semibold"
+              className="text-task-foreground hover:bg-accent/80 cursor-text self-start rounded-sm px-3 py-2 text-2xl font-semibold"
             >
               {title}
             </div>
@@ -124,7 +124,7 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
           ) : (
             <div
               onClick={() => setIsEditingDescription(true)}
-              className="text-task-foreground hover:bg-accent/80 cursor-text rounded-sm px-3 py-2 text-sm font-light"
+              className="text-task-foreground hover:bg-accent/80 cursor-text rounded-sm px-3 py-2 text-base font-light"
             >
               {description || "Add description..."}
             </div>
@@ -134,13 +134,16 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
           <div className="px-3">
             <label className="text-sm font-medium">Subtasks</label>
             {subtasks.map((subtask, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div className="flex grow items-center gap-2">
+              <div
+                key={index}
+                className="flex items-center justify-between gap-2"
+              >
+                <div className="flex grow items-center gap-1">
                   <input
                     type="checkbox"
                     checked={subtask.isCompleted}
                     onChange={() => handleToggleSubtask(index)}
-                    className="h-4 w-4"
+                    className="h-4 w-4 shrink-0"
                   />
                   {editingSubtaskIndex === index ? (
                     <Input
@@ -150,7 +153,7 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
                       }
                       onBlur={() => setEditingSubtaskIndex(null)}
                       autoFocus
-                      placeholder="Subtask title"
+                      placeholder="New subtask"
                       className="w-full"
                     />
                   ) : (
@@ -158,7 +161,7 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
                       onClick={() => setEditingSubtaskIndex(index)}
                       className="text-task-foreground hover:bg-accent/80 cursor-text justify-self-start rounded-sm px-3 py-2 text-sm"
                     >
-                      {subtask.title || "Edit subtask"}
+                      {subtask.title || "New subtask"}
                     </div>
                   )}
                 </div>
@@ -166,6 +169,7 @@ const TaskDialog = ({ task, onSave, children }: TaskDialogProps) => {
                   variant="ghost"
                   size="icon"
                   onClick={() => handleDeleteSubtask(index)}
+                  className="shrink-0"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>

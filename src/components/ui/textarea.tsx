@@ -10,9 +10,9 @@ const textareaVariants = cva(
       variant: {
         default: "placeholder:text-muted-foreground text-base md:text-sm",
         edit_task_title:
-          "text-task-foreground bg-accent/80 rounded-sm border-none text-lg font-semibold shadow-none px-3 py-2 h-auto",
+          "text-task-foreground bg-accent/80 rounded-sm border-none text-2xl font-semibold shadow-none px-3 py-2 h-auto",
         edit_task_description:
-          "text-task-foreground bg-accent/80 rounded-sm border-none text-sm font-light shadow-none px-3 py-2 h-auto",
+          "text-task-foreground bg-accent/80 rounded-sm border-none text-base font-light shadow-none px-3 py-2 h-auto",
       },
     },
     defaultVariants: {
