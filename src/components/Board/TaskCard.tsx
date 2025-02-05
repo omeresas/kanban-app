@@ -1,7 +1,7 @@
 import { useState, ComponentPropsWithoutRef } from "react";
 import { cn } from "@/lib/utils";
-import { useDraggable } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
+// import { useDraggable } from "@dnd-kit/core";
+// import { CSS } from "@dnd-kit/utilities";
 
 import {
   Dialog,
@@ -26,13 +26,13 @@ type TaskProps = ComponentPropsWithoutRef<"div"> & {
 };
 
 const TaskCard = ({ task, className, ...rest }: TaskProps) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: `task-${task.id}`,
-  });
+  // const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  //   id: `task-${task.id}`,
+  // });
 
-  const style = {
-    transform: transform ? CSS.Translate.toString(transform) : undefined,
-  };
+  // const style = {
+  //   transform: transform ? CSS.Translate.toString(transform) : undefined,
+  // };
   const selectedBoardId = useKanbanStore((state) => state.selectedBoardId)!;
   const dispatch = useKanbanStore((state) => state.dispatch);
 
@@ -99,10 +99,10 @@ const TaskCard = ({ task, className, ...rest }: TaskProps) => {
     <Dialog>
       <DialogTrigger asChild>
         <div
-          ref={setNodeRef}
-          style={style}
-          {...listeners}
-          {...attributes}
+          // ref={setNodeRef}
+          // style={style}
+          // {...listeners}
+          // {...attributes}
           className={cn(
             "bg-task-background text-task-foreground hover:ring-primary cursor-pointer rounded-md p-3 shadow-md hover:ring-2",
             className,
