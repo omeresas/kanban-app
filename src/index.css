@@ -9,14 +9,18 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
 
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
+  /* --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground)); */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
 
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
 
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
+  /* --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground)); */
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
@@ -94,12 +98,12 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%; */
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    /* --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%; */
     /* --primary: 221.2 83.2% 53.3%;
     --primary-foreground: 210 40% 98%; */
     --secondary: 210 40% 96.1%;
@@ -132,6 +136,10 @@
     --task-background: var(--color-white);
     --task-foreground: var(--color-gray-900);
 
+    --background: var(--color-white);
+    --foreground: var(--color-gray-900);
+    --popover: var(--color-white);
+    --popover-foreground: var(--color-gray-900);
     --header-sidebar-background: var(--color-white);
     --header-sidebar-foreground: var(--color-gray-900);
 
@@ -157,12 +165,13 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%; */
+
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    /* --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%; */
     /* --primary: 217.2 91.2% 59.8%; 
     --primary-foreground: 222.2 47.4% 11.2%; */
     --secondary: 217.2 32.6% 17.5%;
@@ -194,6 +203,10 @@
     --task-background: var(--color-slate-700);
     --task-foreground: var(--color-white);
 
+    --background: var(--color-slate-900);
+    --foreground: var(--color-white);
+    --popover: var(--color-slate-900);
+    --popover-foreground: var(--color-white);
     --header-sidebar-background: var(--color-slate-900);
     --header-sidebar-foreground: var(--color-white);
 

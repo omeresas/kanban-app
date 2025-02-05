@@ -11,6 +11,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogClose,
+  DialogPortal,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
@@ -48,29 +49,34 @@ const AddBoard = () => {
           <Plus strokeWidth={3} className="pt-[1px]" /> Add Board
         </Button>
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Add New Board</DialogTitle>
-          <DialogDescription>Enter a name for the new board.</DialogDescription>
-        </DialogHeader>
-        <Input
-          type="text"
-          placeholder="Board Name"
-          value={newBoardName}
-          onKeyDown={handleKeyDown}
-          onChange={(e) => setNewBoardName(e.target.value)}
-          className="w-full rounded-md border p-2"
-          autoFocus
-        />
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="secondary">Cancel</Button>
-          </DialogClose>
-          <DialogClose asChild>
-            <Button onClick={handleAddBoard}>Create Board</Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
+
+      <DialogPortal>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Add New Board</DialogTitle>
+            <DialogDescription>
+              Enter a name for the new board.
+            </DialogDescription>
+          </DialogHeader>
+          <Input
+            type="text"
+            placeholder="Board Name"
+            value={newBoardName}
+            onKeyDown={handleKeyDown}
+            onChange={(e) => setNewBoardName(e.target.value)}
+            className="w-full rounded-md border p-2"
+            autoFocus
+          />
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="secondary">Cancel</Button>
+            </DialogClose>
+            <DialogClose asChild>
+              <Button onClick={handleAddBoard}>Create Board</Button>
+            </DialogClose>
+          </DialogFooter>
+        </DialogContent>
+      </DialogPortal>
     </Dialog>
   );
 };
