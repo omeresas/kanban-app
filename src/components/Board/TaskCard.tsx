@@ -72,15 +72,12 @@ const TaskForm = ({ task }: { task: Task }) => {
   );
 
   const handleAddSubtask = () => {
-    setTaskDraft((prevTask) => {
-      const newIndex = prevTask.subtasks.length;
-      const updatedSubtasks = [
-        ...prevTask.subtasks,
-        { title: "", isCompleted: false },
-      ];
-      setEditingSubtaskIndex(newIndex);
-      return { ...prevTask, subtasks: updatedSubtasks };
-    });
+    const newIndex = taskDraft.subtasks.length;
+    setTaskDraft((prevTask) => ({
+      ...prevTask,
+      subtasks: [...prevTask.subtasks, { title: "", isCompleted: false }],
+    }));
+    setEditingSubtaskIndex(newIndex);
   };
 
   const handleSubtaskChange = (index: number, value: string) => {
@@ -93,13 +90,14 @@ const TaskForm = ({ task }: { task: Task }) => {
   };
 
   const handleDeleteSubtask = (index: number) => {
-    setTaskDraft((prevTask) => {
-      const updatedSubtasks = prevTask.subtasks.filter((_, i) => i !== index);
-      if (editingSubtaskIndex === index) {
-        setEditingSubtaskIndex(null);
-      }
-      return { ...prevTask, subtasks: updatedSubtasks };
-    });
+    setTaskDraft((prevTask) => ({
+      ...prevTask,
+      subtasks: prevTask.subtasks.filter((_, i) => i !== index),
+    }));
+
+    if (editingSubtaskIndex === index) {
+      setEditingSubtaskIndex(null);
+    }
   };
 
   const handleToggleSubtask = (index: number) => {
