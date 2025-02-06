@@ -111,6 +111,7 @@ function addTask(
     const newTask: Task = {
       id: getNextTaskId(draft, boardId),
       title,
+      description: "",
       status: column.name,
       statusId: column.id,
       subtasks: [],

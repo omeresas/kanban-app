@@ -15,10 +15,10 @@ export type Column = {
 export type Task = {
   id: UniqueIdentifier;
   title: string;
-  description?: string;
-  status?: string;
-  statusId?: UniqueIdentifier;
-  subtasks?: Subtask[];
+  description: string;
+  status: string;
+  statusId: UniqueIdentifier;
+  subtasks: Subtask[];
 };
 
 export type Subtask = {
