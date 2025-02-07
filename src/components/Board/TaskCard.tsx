@@ -1,7 +1,6 @@
 import { useState, ComponentPropsWithoutRef } from "react";
-import { cn } from "@/lib/utils";
-// import { useDraggable } from "@dnd-kit/core";
-// import { CSS } from "@dnd-kit/utilities";
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
 
 import {
   Dialog,
@@ -25,7 +24,20 @@ type TaskProps = ComponentPropsWithoutRef<"div"> & {
   task: Task;
 };
 
-const TaskCard = ({ task, className, ...rest }: TaskProps) => {
+const TaskCard = ({ task }: TaskProps) => {
+  return (
+    <Dialog>
+      <TaskTrigger task={task} />
+      <DialogPortal>
+        <DialogContent>
+          <TaskForm task={task} />
+        </DialogContent>
+      </DialogPortal>
+    </Dialog>
+  );
+};
+
+const TaskTrigger = ({ task }: { task: Task }) => {
   // const { attributes, listeners, setNodeRef, transform } = useDraggable({
   //   id: `task-${task.id}`,
   // });
@@ -33,30 +45,19 @@ const TaskCard = ({ task, className, ...rest }: TaskProps) => {
   // const style = {
   //   transform: transform ? CSS.Translate.toString(transform) : undefined,
   // };
-
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <div
-          // ref={setNodeRef}
-          // style={style}
-          // {...listeners}
-          // {...attributes}
-          className={cn(
-            "bg-task-background text-task-foreground hover:ring-primary cursor-pointer rounded-md p-3 shadow-md hover:ring-2",
-            className,
-          )}
-          {...rest}
-        >
-          {task.id}: {task.title}
-        </div>
-      </DialogTrigger>
-      <DialogPortal>
-        <DialogContent>
-          <TaskForm task={task} />
-        </DialogContent>
-      </DialogPortal>
-    </Dialog>
+    <DialogTrigger asChild>
+      <Button
+        variant="task_card"
+        size="auto"
+        // ref={setNodeRef}
+        // style={style}
+        // {...listeners}
+        // {...attributes}
+      >
+        {task.id}: {task.title}
+      </Button>
+    </DialogTrigger>
   );
 };
 
