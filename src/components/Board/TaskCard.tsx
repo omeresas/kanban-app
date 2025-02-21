@@ -1,5 +1,5 @@
 import { useState, ComponentPropsWithoutRef } from "react";
-import { useDraggable } from "@dnd-kit/core";
+import { useDraggable, useDndMonitor } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 
 import {
@@ -24,36 +24,77 @@ type TaskProps = ComponentPropsWithoutRef<"div"> & {
   task: Task;
 };
 
+// const TaskCard = ({ task }: TaskProps) => {
+//   return (
+//     <Dialog>
+//       <TaskTrigger task={task} />
+//       <DialogPortal>
+//         <DialogContent>
+//           <TaskForm task={task} />
+//         </DialogContent>
+//       </DialogPortal>
+//     </Dialog>
+//   );
+// };
+
 const TaskCard = ({ task }: TaskProps) => {
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: `task-${task.id}`,
+  });
+
+  const style = {
+    transform: transform ? CSS.Translate.toString(transform) : undefined,
+  };
+
+  useDndMonitor({
+    onDragStart(event) {
+      console.log("drag start", event);
+    },
+    onDragMove(event) {
+      console.log("drag move", event);
+    },
+    onDragOver(event) {
+      console.log("drag over", event);
+    },
+    onDragEnd(event) {
+      console.log("drag end", event);
+    },
+    onDragCancel(event) {
+      console.log("drag cancel", event);
+    },
+  });
+
   return (
-    <Dialog>
-      <TaskTrigger task={task} />
-      <DialogPortal>
-        <DialogContent>
-          <TaskForm task={task} />
-        </DialogContent>
-      </DialogPortal>
-    </Dialog>
+    <Button
+      variant="task_card"
+      size="auto"
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+    >
+      {task.id}: {task.title}
+    </Button>
   );
 };
 
 const TaskTrigger = ({ task }: { task: Task }) => {
-  // const { attributes, listeners, setNodeRef, transform } = useDraggable({
-  //   id: `task-${task.id}`,
-  // });
+  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    id: `task-${task.id}`,
+  });
 
-  // const style = {
-  //   transform: transform ? CSS.Translate.toString(transform) : undefined,
-  // };
+  const style = {
+    transform: transform ? CSS.Translate.toString(transform) : undefined,
+  };
   return (
     <DialogTrigger asChild>
       <Button
         variant="task_card"
         size="auto"
-        // ref={setNodeRef}
-        // style={style}
-        // {...listeners}
-        // {...attributes}
+        ref={setNodeRef}
+        style={style}
+        {...listeners}
+        {...attributes}
       >
         {task.id}: {task.title}
       </Button>
