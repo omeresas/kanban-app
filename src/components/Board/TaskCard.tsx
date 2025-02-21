@@ -1,5 +1,6 @@
 import { useState, ComponentPropsWithoutRef } from "react";
-import { useDraggable, useDndMonitor } from "@dnd-kit/core";
+import { useDndMonitor } from "@dnd-kit/core";
+import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
 import {
@@ -19,8 +20,14 @@ import { Plus, Trash2 } from "lucide-react";
 
 import type { Task } from "@/store/types";
 import useKanbanStore from "@/store/store";
+import { cva } from "class-variance-authority";
 
 type TaskProps = ComponentPropsWithoutRef<"div"> & {
+  task: Task;
+};
+
+export type TaskDragData = {
+  type: "Task";
   task: Task;
 };
 
@@ -38,29 +45,36 @@ type TaskProps = ComponentPropsWithoutRef<"div"> & {
 // };
 
 const TaskCard = ({ task }: TaskProps) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
     id: `task-${task.id}`,
+    data: {
+      type: "Task",
+      task,
+    } as TaskDragData,
   });
 
   const style = {
-    transform: transform ? CSS.Translate.toString(transform) : undefined,
+    transform: CSS.Translate.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
   };
 
   useDndMonitor({
     onDragStart(event) {
       console.log("drag start", event);
     },
-    onDragMove(event) {
-      console.log("drag move", event);
-    },
     onDragOver(event) {
       console.log("drag over", event);
     },
     onDragEnd(event) {
       console.log("drag end", event);
-    },
-    onDragCancel(event) {
-      console.log("drag cancel", event);
     },
   });
 

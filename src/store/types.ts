@@ -60,7 +60,6 @@ export type KanbanAction =
       };
     }
   | {
-      //TODO: update task
       type: "updateTask";
       payload: {
         boardId: UniqueIdentifier;
@@ -69,11 +68,19 @@ export type KanbanAction =
       };
     }
   | {
-      //TODO: Delete task
       type: "deleteTask";
       payload: {
         boardId: UniqueIdentifier;
         columnId: UniqueIdentifier;
         taskId: UniqueIdentifier;
+      };
+    }
+  | {
+      type: "reorderTask";
+      payload: {
+        boardId: UniqueIdentifier;
+        columnId: UniqueIdentifier;
+        oldIndex: number;
+        newIndex: number;
       };
     };

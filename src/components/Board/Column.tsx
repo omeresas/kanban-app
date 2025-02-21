@@ -1,6 +1,10 @@
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 
 import TaskCard from "@/components/Board/TaskCard";
 import AddTask from "@/components/Board/AddTask";
@@ -12,9 +16,19 @@ type ColumnProps = ComponentPropsWithoutRef<"div"> & {
   boardId: UniqueIdentifier;
 };
 
-const Column = ({ column, boardId, className, ...props }: ColumnProps) => {
-  const { setNodeRef } = useDroppable({ id: `column-${column.id}` });
+export type ColumnDragData = {
+  type: "Column";
+  column: Column;
+};
 
+const Column = ({ column, boardId, className, ...props }: ColumnProps) => {
+  const { setNodeRef } = useDroppable({
+    id: `column-${column.id}`,
+  });
+  const taskIds = useMemo(
+    () => column.tasks.map((task) => `task-${task.id}`),
+    [column.tasks],
+  );
   return (
     <div
       ref={setNodeRef}
@@ -29,8 +43,10 @@ const Column = ({ column, boardId, className, ...props }: ColumnProps) => {
         <ColumnOptions boardId={boardId} columnId={column.id} />
       </div>
       <div className="flex flex-col gap-2">
-        {column.tasks.length > 0 &&
-          column.tasks.map((task) => <TaskCard key={task.id} task={task} />)}
+        <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
+          {column.tasks.length > 0 &&
+            column.tasks.map((task) => <TaskCard key={task.id} task={task} />)}
+        </SortableContext>
         <AddTask boardId={boardId} columnId={column.id} />
       </div>
     </div>

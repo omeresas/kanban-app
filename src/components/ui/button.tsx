@@ -24,7 +24,7 @@ const buttonVariants = cva(
         add_task_cancel:
           "bg-add-task-cancel-background text-add-task-cancel-foreground hover:bg-add-task-cancel-background/90",
         task_card:
-          "bg-task-background text-task-foreground hover:ring-primary cursor-pointer rounded-md p-3 shadow-md hover:ring-2 whitespace-normal inline-block text-left",
+          "bg-task-background text-task-foreground hover:ring-primary cursor-pointer rounded-md p-3 shadow-md hover:ring-2 whitespace-normal inline-block text-left min-w-[256px]",
         default:
           "bg-primary text-primary-foreground shadow-sm hover:bg-primary/90",
         destructive:

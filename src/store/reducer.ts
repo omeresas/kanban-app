@@ -2,6 +2,7 @@ import { produce } from "immer";
 import { UniqueIdentifier } from "@dnd-kit/core";
 import type { KanbanState, KanbanAction } from "@/store/types";
 import type { Board, Column, Task } from "@/store/types";
+import { arrayMove } from "@dnd-kit/sortable";
 
 export const kanbanReducer = (
   state: KanbanState,
@@ -53,6 +54,16 @@ export const kanbanReducer = (
           action.payload.boardId,
           action.payload.taskId,
           action.payload.updatedTask,
+        );
+        break;
+
+      case "reorderTask":
+        reorderTask(
+          draft,
+          action.payload.boardId,
+          action.payload.columnId,
+          action.payload.oldIndex,
+          action.payload.newIndex,
         );
         break;
 
@@ -143,6 +154,22 @@ function updateTask(
   if (task) {
     Object.assign(task, updatedTask);
   }
+}
+
+function reorderTask(
+  draft: KanbanState,
+  boardId: UniqueIdentifier,
+  columnId: UniqueIdentifier,
+  oldIndex: number,
+  newIndex: number,
+) {
+  const board = draft.boards.find((b) => b.id === boardId);
+  if (!board) return;
+
+  const column = board.columns.find((c) => c.id === columnId);
+  if (!column) return;
+
+  column.tasks = arrayMove(column.tasks, oldIndex, newIndex);
 }
 
 // Helper functions
