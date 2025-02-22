@@ -57,7 +57,7 @@ const Column = ({ column, className, ...props }: ColumnProps) => {
   };
 
   const variants = cva(
-    "bg-column-background text-column-foreground flex flex-col gap-2 rounded-md p-4 shadow-md",
+    "bg-column-background text-column-foreground flex flex-col gap-2 rounded-md p-4 pt-0 shadow-md",
     {
       variants: {
         isDragging: {
@@ -78,9 +78,9 @@ const Column = ({ column, className, ...props }: ColumnProps) => {
       className={cn(variants({ isDragging }), className)}
       {...props}
     >
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-2">
         <div
-          className="flex-1 cursor-grab active:cursor-grabbing"
+          className="flex-1 cursor-pointer pt-3"
           {...attributes}
           {...listeners}
         >

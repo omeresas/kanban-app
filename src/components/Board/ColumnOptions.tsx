@@ -43,7 +43,7 @@ const ColumnOptions = ({ columnId }: ColumnOptionsProps) => {
           <Button
             variant="ghost"
             size="icon"
-            className="hover:bg-add-task-cancel-background"
+            className="hover:bg-add-task-cancel-background mt-3"
           >
             <MoreHorizontal className="h-5 w-5" />
           </Button>
