@@ -81,18 +81,14 @@ function deleteBoard(draft: KanbanState, id: UniqueIdentifier) {
 }
 
 function addColumn(draft: KanbanState, name: string) {
-  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
-  if (board) {
-    const newColumn: Column = { id: getNextColumnId(board), name, tasks: [] };
-    board.columns.push(newColumn);
-  }
+  const board = getBoard(draft);
+  const newColumn: Column = { id: getNextColumnId(board), name, tasks: [] };
+  board.columns.push(newColumn);
 }
 
 function deleteColumn(draft: KanbanState, columnId: UniqueIdentifier) {
-  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
-  if (board) {
-    board.columns = board.columns.filter((column) => column.id !== columnId);
-  }
+  const board = getBoard(draft);
+  board.columns = board.columns.filter((column) => column.id !== columnId);
 }
 
 function addTask(
@@ -100,19 +96,16 @@ function addTask(
   columnId: UniqueIdentifier,
   title: string,
 ) {
-  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
-  const column = board?.columns.find((c) => c.id === columnId);
-  if (column) {
-    const newTask: Task = {
-      id: getNextTaskId(draft),
-      title,
-      description: "",
-      status: column.name,
-      statusId: column.id,
-      subtasks: [],
-    };
-    column.tasks.push(newTask);
-  }
+  const column = getColumn(draft, columnId);
+  const newTask: Task = {
+    id: getNextTaskId(draft),
+    title,
+    description: "",
+    status: column.name,
+    statusId: column.id,
+    subtasks: [],
+  };
+  column.tasks.push(newTask);
 }
 
 function deleteTask(
@@ -120,11 +113,8 @@ function deleteTask(
   columnId: UniqueIdentifier,
   taskId: UniqueIdentifier,
 ) {
-  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
-  const column = board?.columns.find((c) => c.id === columnId);
-  if (column) {
-    column.tasks = column.tasks.filter((task) => task.id !== taskId);
-  }
+  const column = getColumn(draft, columnId);
+  column.tasks = column.tasks.filter((task) => task.id !== taskId);
 }
 
 function updateTask(
@@ -132,10 +122,8 @@ function updateTask(
   taskId: UniqueIdentifier,
   updatedTask: Partial<Task>,
 ) {
-  const task = getTaskWithinBoard(draft, taskId);
-  if (task) {
-    Object.assign(task, updatedTask);
-  }
+  const task = getTask(draft, taskId);
+  Object.assign(task, updatedTask);
 }
 
 function reorderTask(
@@ -144,12 +132,7 @@ function reorderTask(
   oldIndex: number,
   newIndex: number,
 ) {
-  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
-  if (!board) return;
-
-  const column = board.columns.find((c) => c.id === columnId);
-  if (!column) return;
-
+  const column = getColumn(draft, columnId);
   column.tasks = arrayMove(column.tasks, oldIndex, newIndex);
 }
 
@@ -159,25 +142,45 @@ function moveTask(
   destinationColumnId: UniqueIdentifier,
   taskId: UniqueIdentifier,
 ) {
-  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
-  if (!board) return;
+  const sourceColumn = getColumn(draft, sourceColumnId);
+  const destinationColumn = getColumn(draft, destinationColumnId);
 
-  const sourceColumn = board.columns.find((c) => c.id === sourceColumnId);
-  const destinationColumn = board.columns.find(
-    (c) => c.id === destinationColumnId,
-  );
-  if (!sourceColumn || !destinationColumn) return;
+  const task = getTask(draft, taskId);
+  sourceColumn.tasks = sourceColumn.tasks.filter((t) => t.id !== taskId);
 
-  // Remove task from source column
-  const taskIndex = sourceColumn.tasks.findIndex((t) => t.id === taskId);
-  if (taskIndex === -1) return;
-  const [task] = sourceColumn.tasks.splice(taskIndex, 1);
-
-  // Update task status
   task.statusId = destinationColumnId;
   task.status = destinationColumn.name;
 
   destinationColumn.tasks.push(task);
+}
+
+// Helper functions for accessing state
+function getBoard(draft: KanbanState) {
+  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
+  if (!board) {
+    throw new Error(`Board ${draft.selectedBoardId} not found`);
+  }
+  return board;
+}
+
+function getColumn(draft: KanbanState, columnId: UniqueIdentifier) {
+  const board = getBoard(draft);
+  const column = board.columns.find((c) => c.id === columnId);
+  if (!column) {
+    throw new Error(`Column ${columnId} not found in board ${board.id}`);
+  }
+  return column;
+}
+
+function getTask(draft: KanbanState, taskId: UniqueIdentifier) {
+  const board = getBoard(draft);
+  const task = board.columns
+    .flatMap((col) => col.tasks)
+    .find((t) => t.id === taskId);
+  if (!task) {
+    throw new Error(`Task ${taskId} not found in board ${board.id}`);
+  }
+  return task;
 }
 
 // Helper functions
@@ -202,11 +205,4 @@ function getNextTaskId(draft: KanbanState): UniqueIdentifier {
       ?.columns.flatMap((column) => column.tasks) ?? [];
   if (allTasks.length === 0) return 0;
   return Math.max(...allTasks.map((task) => toNumber(task.id))) + 1;
-}
-
-function getTaskWithinBoard(draft: KanbanState, taskId: UniqueIdentifier) {
-  return draft.boards
-    .find((b) => b.id === draft.selectedBoardId)
-    ?.columns.flatMap((c) => c.tasks)
-    .find((t) => t.id === taskId);
 }

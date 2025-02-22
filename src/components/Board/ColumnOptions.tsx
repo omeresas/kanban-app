@@ -23,17 +23,16 @@ import useKanbanStore from "@/store/store";
 import { UniqueIdentifier } from "@dnd-kit/core";
 
 type ColumnOptionsProps = {
-  boardId: UniqueIdentifier;
   columnId: UniqueIdentifier;
 };
 
-const ColumnOptions = ({ boardId, columnId }: ColumnOptionsProps) => {
+const ColumnOptions = ({ columnId }: ColumnOptionsProps) => {
   const dispatch = useKanbanStore((state) => state.dispatch);
 
   const handleDeleteColumn = () => {
     dispatch({
       type: "deleteColumn",
-      payload: { boardId, columnId },
+      payload: { columnId },
     });
   };
 

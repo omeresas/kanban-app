@@ -165,7 +165,6 @@ const TaskForm = ({ task }: { task: Task }) => {
     dispatch({
       type: "updateTask",
       payload: {
-        boardId: selectedBoardId,
         taskId: task.id,
         updatedTask: taskDraft,
       },

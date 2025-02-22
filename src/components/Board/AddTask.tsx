@@ -7,11 +7,10 @@ import useKanbanStore from "@/store/store";
 import { useOnClickOutside } from "usehooks-ts";
 
 type AddTaskProps = {
-  boardId: UniqueIdentifier;
   columnId: UniqueIdentifier;
 };
 
-const AddTask = ({ boardId, columnId }: AddTaskProps) => {
+const AddTask = ({ columnId }: AddTaskProps) => {
   const dispatch = useKanbanStore((state) => state.dispatch);
   const [isEditing, setIsEditing] = useState(false);
   const [taskName, setTaskName] = useState("");
@@ -22,7 +21,7 @@ const AddTask = ({ boardId, columnId }: AddTaskProps) => {
     if (!taskName.trim()) return;
     dispatch({
       type: "addTask",
-      payload: { boardId, columnId, title: taskName },
+      payload: { columnId, title: taskName },
     });
     setTaskName("");
     setIsEditing(false);
