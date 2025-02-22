@@ -33,6 +33,4 @@ const Header = ({ className, ...props }: HeaderProps) => {
   );
 };
 
-Header.displayName = "Header";
-
 export default Header;

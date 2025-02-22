@@ -162,7 +162,7 @@ const Board = ({ className, selectedBoard, ...props }: BoardProps) => {
       </div>
       {createPortal(
         <DragOverlay>
-          {activeColumn && <Column column={activeColumn} isOverlay />}
+          {activeColumn && <Column column={activeColumn} />}
           {activeTask && <TaskCard task={activeTask} />}
         </DragOverlay>,
         document.body,

@@ -85,6 +85,7 @@ const TaskCard = ({ task }: TaskProps) => {
     </Button>
   );
 };
+TaskCard.displayName = "TaskCard";
 
 const TaskTrigger = ({ task }: { task: Task }) => {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -109,11 +110,10 @@ const TaskTrigger = ({ task }: { task: Task }) => {
     </DialogTrigger>
   );
 };
+TaskTrigger.displayName = "TaskTrigger";
 
 const TaskForm = ({ task }: { task: Task }) => {
   const { dispatch } = useKanbanStore();
-  const selectedBoardId = useKanbanStore((state) => state.selectedBoardId)!;
-
   const [taskDraft, setTaskDraft] = useState<Task>(task);
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [isEditingDescription, setIsEditingDescription] = useState(false);
@@ -290,5 +290,6 @@ const TaskForm = ({ task }: { task: Task }) => {
     </div>
   );
 };
+TaskForm.displayName = "TaskForm";
 
 export default TaskCard;

@@ -80,6 +80,4 @@ const ColumnOptions = ({ columnId }: ColumnOptionsProps) => {
   );
 };
 
-ColumnOptions.displayName = "ColumnOptions";
-
 export default ColumnOptions;

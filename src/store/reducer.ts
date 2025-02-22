@@ -64,6 +64,10 @@ export const kanbanReducer = (
         reorderColumn(draft, action.payload.oldIndex, action.payload.newIndex);
         break;
 
+      case "renameColumn":
+        renameColumn(draft, action.payload.columnId, action.payload.name);
+        break;
+
       default:
         throw new Error(`Unknown action: ${action}`);
     }
@@ -161,6 +165,20 @@ function moveTask(
 function reorderColumn(draft: KanbanState, oldIndex: number, newIndex: number) {
   const board = getBoard(draft);
   board.columns = arrayMove(board.columns, oldIndex, newIndex);
+}
+
+function renameColumn(
+  draft: KanbanState,
+  columnId: UniqueIdentifier,
+  name: string,
+) {
+  const column = getColumn(draft, columnId);
+  column.name = name;
+
+  // Update status of all tasks in this column
+  column.tasks.forEach((task) => {
+    task.status = name;
+  });
 }
 
 // Helper functions for accessing state

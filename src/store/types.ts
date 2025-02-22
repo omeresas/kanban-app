@@ -92,4 +92,11 @@ export type KanbanAction =
         oldIndex: number;
         newIndex: number;
       };
+    }
+  | {
+      type: "renameColumn";
+      payload: {
+        columnId: UniqueIdentifier;
+        name: string;
+      };
     };
