@@ -60,6 +60,10 @@ export const kanbanReducer = (
         );
         break;
 
+      case "reorderColumn":
+        reorderColumn(draft, action.payload.oldIndex, action.payload.newIndex);
+        break;
+
       default:
         throw new Error(`Unknown action: ${action}`);
     }
@@ -152,6 +156,11 @@ function moveTask(
   task.status = destinationColumn.name;
 
   destinationColumn.tasks.push(task);
+}
+
+function reorderColumn(draft: KanbanState, oldIndex: number, newIndex: number) {
+  const board = getBoard(draft);
+  board.columns = arrayMove(board.columns, oldIndex, newIndex);
 }
 
 // Helper functions for accessing state

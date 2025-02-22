@@ -85,4 +85,11 @@ export type KanbanAction =
         destinationColumnId: UniqueIdentifier;
         taskId: UniqueIdentifier;
       };
+    }
+  | {
+      type: "reorderColumn";
+      payload: {
+        oldIndex: number;
+        newIndex: number;
+      };
     };
