@@ -16,14 +16,13 @@ type ColumnProps = ComponentPropsWithoutRef<"div"> & {
   boardId: UniqueIdentifier;
 };
 
-export type ColumnDragData = {
-  type: "Column";
-  column: Column;
-};
-
 const Column = ({ column, boardId, className, ...props }: ColumnProps) => {
   const { setNodeRef } = useDroppable({
     id: `column-${column.id}`,
+    data: {
+      type: "Column",
+      column,
+    },
   });
   const taskIds = useMemo(
     () => column.tasks.map((task) => `task-${task.id}`),

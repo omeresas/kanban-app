@@ -20,14 +20,8 @@ import { Plus, Trash2 } from "lucide-react";
 
 import type { Task } from "@/store/types";
 import useKanbanStore from "@/store/store";
-import { cva } from "class-variance-authority";
 
 type TaskProps = ComponentPropsWithoutRef<"div"> & {
-  task: Task;
-};
-
-export type TaskDragData = {
-  type: "Task";
   task: Task;
 };
 
@@ -57,7 +51,7 @@ const TaskCard = ({ task }: TaskProps) => {
     data: {
       type: "Task",
       task,
-    } as TaskDragData,
+    },
   });
 
   const style = {

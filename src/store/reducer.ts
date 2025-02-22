@@ -23,47 +23,40 @@ export const kanbanReducer = (
         break;
 
       case "addColumn":
-        addColumn(draft, action.payload.boardId, action.payload.name);
+        addColumn(draft, action.payload.name);
         break;
 
       case "deleteColumn":
-        deleteColumn(draft, action.payload.boardId, action.payload.columnId);
+        deleteColumn(draft, action.payload.columnId);
         break;
 
       case "addTask":
-        addTask(
-          draft,
-          action.payload.boardId,
-          action.payload.columnId,
-          action.payload.title,
-        );
+        addTask(draft, action.payload.columnId, action.payload.title);
         break;
 
       case "deleteTask":
-        deleteTask(
-          draft,
-          action.payload.boardId,
-          action.payload.columnId,
-          action.payload.taskId,
-        );
+        deleteTask(draft, action.payload.columnId, action.payload.taskId);
         break;
 
       case "updateTask":
-        updateTask(
-          draft,
-          action.payload.boardId,
-          action.payload.taskId,
-          action.payload.updatedTask,
-        );
+        updateTask(draft, action.payload.taskId, action.payload.updatedTask);
         break;
 
       case "reorderTask":
         reorderTask(
           draft,
-          action.payload.boardId,
           action.payload.columnId,
           action.payload.oldIndex,
           action.payload.newIndex,
+        );
+        break;
+
+      case "moveTask":
+        moveTask(
+          draft,
+          action.payload.sourceColumnId,
+          action.payload.destinationColumnId,
+          action.payload.taskId,
         );
         break;
 
@@ -87,24 +80,16 @@ function deleteBoard(draft: KanbanState, id: UniqueIdentifier) {
   draft.selectedBoardId = draft.boards.length > 0 ? draft.boards[0].id : null;
 }
 
-function addColumn(
-  draft: KanbanState,
-  boardId: UniqueIdentifier,
-  name: string,
-) {
-  const board = draft.boards.find((b) => b.id === boardId);
+function addColumn(draft: KanbanState, name: string) {
+  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
   if (board) {
     const newColumn: Column = { id: getNextColumnId(board), name, tasks: [] };
     board.columns.push(newColumn);
   }
 }
 
-function deleteColumn(
-  draft: KanbanState,
-  boardId: UniqueIdentifier,
-  columnId: UniqueIdentifier,
-) {
-  const board = draft.boards.find((b) => b.id === boardId);
+function deleteColumn(draft: KanbanState, columnId: UniqueIdentifier) {
+  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
   if (board) {
     board.columns = board.columns.filter((column) => column.id !== columnId);
   }
@@ -112,15 +97,14 @@ function deleteColumn(
 
 function addTask(
   draft: KanbanState,
-  boardId: UniqueIdentifier,
   columnId: UniqueIdentifier,
   title: string,
 ) {
-  const board = draft.boards.find((b) => b.id === boardId);
+  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
   const column = board?.columns.find((c) => c.id === columnId);
   if (column) {
     const newTask: Task = {
-      id: getNextTaskId(draft, boardId),
+      id: getNextTaskId(draft),
       title,
       description: "",
       status: column.name,
@@ -133,11 +117,10 @@ function addTask(
 
 function deleteTask(
   draft: KanbanState,
-  boardId: UniqueIdentifier,
   columnId: UniqueIdentifier,
   taskId: UniqueIdentifier,
 ) {
-  const board = draft.boards.find((b) => b.id === boardId);
+  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
   const column = board?.columns.find((c) => c.id === columnId);
   if (column) {
     column.tasks = column.tasks.filter((task) => task.id !== taskId);
@@ -146,11 +129,10 @@ function deleteTask(
 
 function updateTask(
   draft: KanbanState,
-  boardId: UniqueIdentifier,
   taskId: UniqueIdentifier,
   updatedTask: Partial<Task>,
 ) {
-  const task = getTaskWithinBoard(draft, boardId, taskId);
+  const task = getTaskWithinBoard(draft, taskId);
   if (task) {
     Object.assign(task, updatedTask);
   }
@@ -158,18 +140,44 @@ function updateTask(
 
 function reorderTask(
   draft: KanbanState,
-  boardId: UniqueIdentifier,
   columnId: UniqueIdentifier,
   oldIndex: number,
   newIndex: number,
 ) {
-  const board = draft.boards.find((b) => b.id === boardId);
+  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
   if (!board) return;
 
   const column = board.columns.find((c) => c.id === columnId);
   if (!column) return;
 
   column.tasks = arrayMove(column.tasks, oldIndex, newIndex);
+}
+
+function moveTask(
+  draft: KanbanState,
+  sourceColumnId: UniqueIdentifier,
+  destinationColumnId: UniqueIdentifier,
+  taskId: UniqueIdentifier,
+) {
+  const board = draft.boards.find((b) => b.id === draft.selectedBoardId);
+  if (!board) return;
+
+  const sourceColumn = board.columns.find((c) => c.id === sourceColumnId);
+  const destinationColumn = board.columns.find(
+    (c) => c.id === destinationColumnId,
+  );
+  if (!sourceColumn || !destinationColumn) return;
+
+  // Remove task from source column
+  const taskIndex = sourceColumn.tasks.findIndex((t) => t.id === taskId);
+  if (taskIndex === -1) return;
+  const [task] = sourceColumn.tasks.splice(taskIndex, 1);
+
+  // Update task status
+  task.statusId = destinationColumnId;
+  task.status = destinationColumn.name;
+
+  destinationColumn.tasks.push(task);
 }
 
 // Helper functions
@@ -187,25 +195,18 @@ function getNextColumnId(board: Board): UniqueIdentifier {
   return Math.max(...board.columns.map((column) => toNumber(column.id))) + 1;
 }
 
-function getNextTaskId(
-  draft: KanbanState,
-  boardId: UniqueIdentifier,
-): UniqueIdentifier {
+function getNextTaskId(draft: KanbanState): UniqueIdentifier {
   const allTasks =
     draft.boards
-      .find((b) => b.id === boardId)
+      .find((b) => b.id === draft.selectedBoardId)
       ?.columns.flatMap((column) => column.tasks) ?? [];
   if (allTasks.length === 0) return 0;
   return Math.max(...allTasks.map((task) => toNumber(task.id))) + 1;
 }
 
-function getTaskWithinBoard(
-  draft: KanbanState,
-  boardId: UniqueIdentifier,
-  taskId: UniqueIdentifier,
-) {
+function getTaskWithinBoard(draft: KanbanState, taskId: UniqueIdentifier) {
   return draft.boards
-    .find((b) => b.id === boardId)
+    .find((b) => b.id === draft.selectedBoardId)
     ?.columns.flatMap((c) => c.tasks)
     .find((t) => t.id === taskId);
 }

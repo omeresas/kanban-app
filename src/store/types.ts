@@ -39,22 +39,19 @@ export type KanbanAction =
   | { type: "setSelectedBoard"; payload: { boardId: UniqueIdentifier | null } }
   | {
       type: "deleteBoard";
-      payload: {
-        boardId: UniqueIdentifier;
-      };
+      payload: { boardId: UniqueIdentifier };
     }
   | {
       type: "addColumn";
-      payload: { boardId: UniqueIdentifier; name: string };
+      payload: { name: string };
     }
   | {
       type: "deleteColumn";
-      payload: { boardId: UniqueIdentifier; columnId: UniqueIdentifier };
+      payload: { columnId: UniqueIdentifier };
     }
   | {
       type: "addTask";
       payload: {
-        boardId: UniqueIdentifier;
         columnId: UniqueIdentifier;
         title: string;
       };
@@ -62,7 +59,6 @@ export type KanbanAction =
   | {
       type: "updateTask";
       payload: {
-        boardId: UniqueIdentifier;
         taskId: UniqueIdentifier;
         updatedTask: Partial<Task>;
       };
@@ -70,7 +66,6 @@ export type KanbanAction =
   | {
       type: "deleteTask";
       payload: {
-        boardId: UniqueIdentifier;
         columnId: UniqueIdentifier;
         taskId: UniqueIdentifier;
       };
@@ -78,9 +73,16 @@ export type KanbanAction =
   | {
       type: "reorderTask";
       payload: {
-        boardId: UniqueIdentifier;
         columnId: UniqueIdentifier;
         oldIndex: number;
         newIndex: number;
+      };
+    }
+  | {
+      type: "moveTask";
+      payload: {
+        sourceColumnId: UniqueIdentifier;
+        destinationColumnId: UniqueIdentifier;
+        taskId: UniqueIdentifier;
       };
     };

@@ -1,6 +1,6 @@
 import { ComponentPropsWithoutRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { cn, hasTaskDragData } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import {
   DndContext,
   DragStartEvent,
@@ -12,11 +12,12 @@ import {
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
-import Column from "@/components/Board/Column";
 import AddColumn from "@/components/Board/AddColumn";
 import TaskCard from "@/components/Board/TaskCard";
+import Column from "@/components/Board/Column";
 import useKanbanStore from "@/store/store";
 import type { Task, Board } from "@/store/types";
+import type { Column as ColumnType } from "@/store/types";
 
 type BoardProps = ComponentPropsWithoutRef<"div"> & {
   selectedBoard: Board;
@@ -35,65 +36,46 @@ const Board = ({ className, selectedBoard, ...props }: BoardProps) => {
   );
 
   const handleDragStart = (event: DragStartEvent) => {
-    if (!hasTaskDragData(event.active) || !event.active.data.current) {
-      return;
-    }
-
-    setActiveTask(event.active.data.current.task);
+    setActiveTask(event.active.data.current?.task);
   };
 
-  // const handleDragOver = (event: DragOverEvent) => {
-  //   const { active, over } = event;
-  //   if (!over) return;
+  const handleDragOver = (event: DragOverEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
 
-  //   const activeId = active.id;
-  //   const overId = over.id;
+    const activeTask = active.data.current?.task as Task;
+    const overType = over.data.current?.type;
 
-  //   if (activeId === overId) return;
+    // Get the destination column id based on over element type
+    const destinationColumnId =
+      overType === "Task"
+        ? (over.data.current?.task as Task).statusId // Use task's statusId
+        : (over.data.current?.column as ColumnType).id; // Use column's id
 
-  //   if (!hasTaskDragData(active) || !hasTaskDragData(over)) return;
-
-  //   const { task: activeTask, columnId: activeColumnId } = active.data.current;
-  //   const { task: overTask, columnId: overColumnId } = over.data.current;
-
-  //   // Only handle reordering if tasks are in the same column
-  //   if (activeColumnId === overColumnId) {
-  //     const column = selectedBoard.columns.find(
-  //       (col) => col.id === activeColumnId,
-  //     );
-  //     if (!column) return;
-
-  //     const oldIndex = column.tasks.findIndex((t) => t.id === activeTask.id);
-  //     const newIndex = column.tasks.findIndex((t) => t.id === overTask.id);
-
-  //     if (oldIndex !== newIndex) {
-  //       dispatch({
-  //         type: "reorderTask",
-  //         payload: {
-  //           boardId: selectedBoard.id,
-  //           columnId: activeColumnId,
-  //           oldIndex,
-  //           newIndex,
-  //         },
-  //       });
-  //     }
-  //   }
-  // };
+    if (activeTask.statusId !== destinationColumnId) {
+      dispatch({
+        type: "moveTask",
+        payload: {
+          sourceColumnId: activeTask.statusId,
+          destinationColumnId,
+          taskId: activeTask.id,
+        },
+      });
+    }
+  };
 
   const handleDragEnd = (event: DragEndEvent) => {
     setActiveTask(null);
     const { active, over } = event;
-
-    if (!over || !hasTaskDragData(active)) return;
+    if (!over) return;
 
     const activeId = active.id.toString();
     const overId = over.id.toString();
 
-    const { task } = active.data.current;
+    const task = active.data.current?.task as Task;
     const column = selectedBoard.columns.find(
       (col) => col.id === task.statusId,
-    );
-    if (!column) return;
+    ) as ColumnType;
 
     const oldIndex = column.tasks.findIndex((t) => `task-${t.id}` === activeId);
     const newIndex = column.tasks.findIndex((t) => `task-${t.id}` === overId);
@@ -102,7 +84,6 @@ const Board = ({ className, selectedBoard, ...props }: BoardProps) => {
       dispatch({
         type: "reorderTask",
         payload: {
-          boardId: selectedBoard.id,
           columnId: column.id,
           oldIndex,
           newIndex,
@@ -114,9 +95,10 @@ const Board = ({ className, selectedBoard, ...props }: BoardProps) => {
   return (
     <DndContext
       sensors={sensors}
+      // There are also other collision detection strategies like rectIntersection and pointerWithin
       collisionDetection={closestCorners}
       onDragStart={handleDragStart}
-      // onDragOver={handleDragOver}
+      onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
     >
       <div
