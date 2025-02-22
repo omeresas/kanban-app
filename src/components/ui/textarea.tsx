@@ -10,7 +10,7 @@ const textareaVariants = cva(
       variant: {
         default: "",
         edit_task_description:
-          "text-task-foreground bg-accent/80 rounded-sm border-none text-base font-light shadow-none px-3 py-2 h-auto",
+          "text-task-foreground bg-accent/80 rounded-xs border-none text-base font-normal shadow-none px-3 py-2 h-auto focus-visible:ring-2",
         edit_column_title:
           "text-column-foreground bg-task-background rounded-xs border-none text-lg font-bold p-1 md:text-lg break-words break-all focus-visible:ring-2",
       },

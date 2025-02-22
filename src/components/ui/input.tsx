@@ -8,9 +8,7 @@ const inputVariants = cva(
       variant: {
         default: "",
         edit_task_title:
-          "text-task-foreground bg-accent/80 rounded-sm border-none text-xl font-semibold shadow-none px-3 py-2 md:text-xl ring-0",
-        edit_column_title:
-          "text-column-foreground bg-task-background rounded-sm border-none text-lg font-bold p-0 md:text-lg w-full overflow-hidden text-ellipsis whitespace-nowrap",
+          "text-task-foreground bg-accent/80 rounded-xs border-none text-xl font-semibold shadow-none px-3 py-2 md:text-xl focus-visible:ring-2",
       },
     },
     defaultVariants: {
@@ -27,7 +25,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     return (
       <input
         type={type}
-        className={cn(inputVariants({ variant, className }))}
+        className={cn(inputVariants({ variant }), className)}
         ref={ref}
         {...props}
       />

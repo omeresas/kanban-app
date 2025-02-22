@@ -1,5 +1,4 @@
 import { useState, ComponentPropsWithoutRef } from "react";
-import { useDndMonitor } from "@dnd-kit/core";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
@@ -25,20 +24,21 @@ type TaskProps = ComponentPropsWithoutRef<"div"> & {
   task: Task;
 };
 
-// const TaskCard = ({ task }: TaskProps) => {
-//   return (
-//     <Dialog>
-//       <TaskTrigger task={task} />
-//       <DialogPortal>
-//         <DialogContent>
-//           <TaskForm task={task} />
-//         </DialogContent>
-//       </DialogPortal>
-//     </Dialog>
-//   );
-// };
-
 const TaskCard = ({ task }: TaskProps) => {
+  return (
+    <Dialog>
+      <TaskTrigger task={task} />
+      <DialogPortal>
+        <DialogContent>
+          <TaskForm task={task} />
+        </DialogContent>
+      </DialogPortal>
+    </Dialog>
+  );
+};
+TaskCard.displayName = "TaskCard";
+
+const TaskTrigger = ({ task }: { task: Task }) => {
   const {
     attributes,
     listeners,
@@ -60,41 +60,6 @@ const TaskCard = ({ task }: TaskProps) => {
     opacity: isDragging ? 0.5 : 1,
   };
 
-  useDndMonitor({
-    onDragStart(event) {
-      console.log("drag start", event);
-    },
-    onDragOver(event) {
-      console.log("drag over", event);
-    },
-    onDragEnd(event) {
-      console.log("drag end", event);
-    },
-  });
-
-  return (
-    <Button
-      variant="task_card"
-      size="auto"
-      ref={setNodeRef}
-      style={style}
-      {...listeners}
-      {...attributes}
-    >
-      {task.id}: {task.title}
-    </Button>
-  );
-};
-TaskCard.displayName = "TaskCard";
-
-const TaskTrigger = ({ task }: { task: Task }) => {
-  const { attributes, listeners, setNodeRef, transform } = useDraggable({
-    id: `task-${task.id}`,
-  });
-
-  const style = {
-    transform: transform ? CSS.Translate.toString(transform) : undefined,
-  };
   return (
     <DialogTrigger asChild>
       <Button
@@ -193,19 +158,20 @@ const TaskForm = ({ task }: { task: Task }) => {
               setIsEditingTitle(false);
             }}
             autoFocus
+            onFocus={(e) => e.target.select()}
             variant="edit_task_title"
           />
         ) : (
           <div
             onClick={() => setIsEditingTitle(true)}
-            className="text-task-foreground hover:bg-accent/80 cursor-text rounded-sm px-3 py-2 text-xl font-semibold"
+            className="text-task-foreground hover:bg-accent/80 cursor-text rounded-xs px-3 py-2 text-xl font-semibold"
           >
             {taskDraft.title}
           </div>
         )}
       </DialogTitle>
 
-      <DialogDescription asChild>
+      <DialogDescription asChild className="text-task-foreground">
         {isEditingDescription ? (
           <Textarea
             value={taskDraft.description}
@@ -217,14 +183,20 @@ const TaskForm = ({ task }: { task: Task }) => {
             }
             onBlur={() => setIsEditingDescription(false)}
             autoFocus
+            onFocus={(e) => {
+              e.target.setSelectionRange(
+                e.target.value.length,
+                e.target.value.length,
+              );
+            }}
             placeholder="Add description..."
-            rows={3}
+            rows={2}
             variant="edit_task_description"
           />
         ) : (
           <div
             onClick={() => setIsEditingDescription(true)}
-            className="text-task-foreground hover:bg-accent/80 cursor-text rounded-sm px-3 py-2 text-base font-light"
+            className="text-task-foreground hover:bg-accent/80 cursor-text rounded-xs px-3 py-2 text-base font-normal"
           >
             {taskDraft.description || "Add description..."}
           </div>
@@ -232,9 +204,11 @@ const TaskForm = ({ task }: { task: Task }) => {
       </DialogDescription>
 
       <div className="px-3">
-        <label className="text-sm font-medium">Subtasks</label>
+        <label className="mb-1 inline-block text-sm font-medium">
+          Subtasks
+        </label>
         {taskDraft.subtasks.map((subtask, index) => (
-          <div key={index} className="flex items-center justify-between gap-2">
+          <div key={index} className="flex items-center justify-between gap-3">
             <div className="flex grow items-center gap-2">
               <input
                 type="checkbox"
@@ -249,12 +223,12 @@ const TaskForm = ({ task }: { task: Task }) => {
                   onBlur={() => setEditingSubtaskIndex(null)}
                   autoFocus
                   placeholder="New subtask"
-                  className="bg-accent/80 w-full border-none shadow-none"
+                  className="bg-accent/80 h-auto w-full border-none shadow-none"
                 />
               ) : (
                 <div
                   onClick={() => setEditingSubtaskIndex(index)}
-                  className="text-task-foreground hover:bg-accent/80 cursor-text rounded-sm px-3 py-2 text-sm"
+                  className="text-task-foreground hover:bg-accent/80 cursor-text rounded-sm px-3 py-1 text-sm"
                 >
                   {subtask.title || "New subtask"}
                 </div>
